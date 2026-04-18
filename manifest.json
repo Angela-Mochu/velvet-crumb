@@ -1,0 +1,11 @@
+{
+  "name": "Velvet Crumb",
+  "short_name": "Velvet Crumb",
+  "description": "Premium artisan treats — cake pops, cakesicles, cookies & more. Order via WhatsApp.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1A060E",
+  "theme_color": "#1A060E",
+  "orientation": "portrait-primary",
+  "icons": []
+}
