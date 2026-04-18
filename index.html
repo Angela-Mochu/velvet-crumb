@@ -1,0 +1,2050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velvet Crumb — Premium Artisan Treats</title>
+    <meta name="description" content="Premium handcrafted treats — cake pops, cakesicles, cookies, banana bread & more. Order online via WhatsApp. Nairobi, Kenya.">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1A060E">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Velvet Crumb">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        html{scroll-behavior:smooth;}
+        body{
+            font-family:'Raleway',sans-serif;
+            background:#1A060E;
+            color:#FFF2F6;
+            overflow-x:hidden;
+        }
+        :root{
+            --dark:#1A060E;
+            --dark2:#240A18;
+            --sb:#100408;
+            --burg:#7A1A3A;
+            --gold:#FF4B82;
+            --gold-lt:#FF7AA8;
+            --cream:#FFF2F6;
+            --blush:#FF1A6C;
+            --green:#25D366;
+            --sb-w:260px;
+        }
+        img{display:block;width:100%;height:100%;object-fit:contain;}
+
+        /* ── LAYOUT ── */
+        .layout{display:flex;min-height:100vh;}
+
+        /* ── SIDEBAR ── */
+        .sidebar{
+            width:var(--sb-w);
+            background:var(--sb);
+            border-right:1px solid rgba(201,168,76,0.12);
+            position:fixed;top:0;left:0;bottom:0;
+            display:flex;flex-direction:column;
+            z-index:900;
+            transition:transform 0.3s ease;
+        }
+        .sb-top{
+            padding:2rem 1.5rem 1.5rem;
+            border-bottom:1px solid rgba(201,168,76,0.1);
+        }
+        .sb-logo{
+            font-family:'Playfair Display',serif;
+            font-size:1.6rem;color:var(--gold);
+            text-decoration:none;letter-spacing:2px;
+            display:block;
+        }
+        .sb-logo span{color:var(--blush);}
+        .sb-tagline{
+            font-size:0.62rem;letter-spacing:3px;
+            text-transform:uppercase;
+            color:rgba(242,217,200,0.35);
+            margin-top:0.3rem;
+        }
+        .sb-nav{
+            flex:1;padding:1.5rem 0;overflow-y:auto;
+        }
+        .sb-section-label{
+            font-size:0.58rem;letter-spacing:4px;
+            text-transform:uppercase;color:rgba(242,217,200,0.3);
+            padding:0.5rem 1.8rem 0.3rem;
+        }
+        .sb-link{
+            display:flex;align-items:center;gap:0.9rem;
+            padding:0.85rem 1.8rem;
+            color:rgba(242,217,200,0.65);
+            text-decoration:none;
+            font-size:0.82rem;letter-spacing:1px;
+            font-weight:500;
+            border-left:3px solid transparent;
+            transition:all 0.2s;
+            cursor:pointer;
+        }
+        .sb-link:hover{
+            color:var(--cream);
+            background:rgba(201,168,76,0.05);
+        }
+        .sb-link.active{
+            color:var(--gold);
+            border-left-color:var(--gold);
+            background:rgba(201,168,76,0.08);
+        }
+        .sb-link .icon{font-size:1rem;width:20px;text-align:center;}
+        .sb-bottom{
+            padding:1.5rem;
+            border-top:1px solid rgba(201,168,76,0.1);
+        }
+        .sb-socials{
+            display:flex;gap:0.75rem;justify-content:center;margin-bottom:1rem;
+        }
+        .sb-soc{
+            width:34px;height:34px;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            background:rgba(201,168,76,0.08);
+            border:1px solid rgba(201,168,76,0.15);
+            text-decoration:none;transition:all 0.2s;
+        }
+        .sb-soc:hover{background:rgba(201,168,76,0.2);border-color:var(--gold);}
+        .sb-soc svg{width:15px;height:15px;}
+        .sb-wa{
+            display:flex;align-items:center;justify-content:center;gap:0.5rem;
+            background:var(--green);color:#fff;
+            text-decoration:none;padding:0.7rem;
+            border-radius:6px;font-size:0.78rem;
+            font-weight:700;letter-spacing:1px;
+            transition:all 0.2s;
+        }
+        .sb-wa:hover{filter:brightness(1.1);}
+        .sb-wa svg{width:16px;height:16px;flex-shrink:0;}
+
+        /* ── MAIN ── */
+        .main{
+            margin-left:var(--sb-w);
+            flex:1;min-height:100vh;
+            position:relative;
+        }
+
+        /* Top bar (mobile only) */
+        .topbar{
+            display:none;
+            position:sticky;top:0;z-index:800;
+            background:rgba(13,5,0,0.97);
+            backdrop-filter:blur(10px);
+            border-bottom:1px solid rgba(201,168,76,0.15);
+            padding:1rem 1.5rem;
+            align-items:center;justify-content:space-between;
+        }
+        .topbar-logo{
+            font-family:'Playfair Display',serif;
+            font-size:1.3rem;color:var(--gold);
+            text-decoration:none;
+        }
+        .topbar-logo span{color:var(--blush);}
+        .ham{
+            background:none;border:none;cursor:pointer;
+            display:flex;flex-direction:column;gap:5px;padding:4px;
+        }
+        .ham span{width:24px;height:2px;background:var(--gold);display:block;transition:all 0.3s;}
+        .overlay{
+            display:none;position:fixed;inset:0;
+            background:rgba(0,0,0,0.7);z-index:850;
+        }
+        .overlay.show{display:block;}
+
+        /* ── PAGES ── */
+        .page{display:none;animation:fadeIn 0.35s ease;}
+        .page.active{display:block;}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+        /* ── HOME PAGE ── */
+        .hero{
+            min-height:100vh;
+            display:flex;align-items:center;justify-content:center;
+            text-align:center;padding:5rem 3rem 4rem;
+            background:
+                radial-gradient(ellipse at top,rgba(122,26,58,0.92) 0%,transparent 55%),
+                radial-gradient(ellipse at bottom right,rgba(255,75,130,0.22) 0%,transparent 50%),
+                linear-gradient(135deg,#1A060E 0%,#450A25 50%,#1A060E 100%);
+            position:relative;overflow:hidden;
+        }
+        .hero::before{
+            content:'';position:absolute;inset:0;
+            background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9A84C' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+        .hero-inner{position:relative;z-index:1;max-width:750px;}
+        .badge{
+            display:inline-block;
+            border:1px solid var(--gold);color:var(--gold);
+            font-size:0.68rem;letter-spacing:4px;
+            text-transform:uppercase;padding:0.4rem 1.6rem;
+            margin-bottom:2rem;
+        }
+        .hero h1{
+            font-family:'Playfair Display',serif;
+            font-size:clamp(3rem,7vw,5.5rem);
+            line-height:1.08;color:var(--cream);margin-bottom:1.5rem;
+        }
+        .hero h1 em{font-style:italic;color:var(--blush);}
+        .hero p{
+            font-size:1.05rem;color:rgba(242,217,200,0.75);
+            line-height:1.9;max-width:520px;
+            margin:0 auto 3rem;font-weight:300;
+        }
+        .hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
+        /* Buttons */
+        .btn{
+            display:inline-flex;align-items:center;gap:0.5rem;
+            text-decoration:none;padding:0.9rem 2.2rem;
+            font-family:'Raleway',sans-serif;font-weight:700;
+            font-size:0.78rem;letter-spacing:2px;
+            text-transform:uppercase;border-radius:3px;
+            transition:all 0.3s;cursor:pointer;border:none;
+        }
+        .btn-gold{background:var(--gold);color:var(--dark);}
+        .btn-gold:hover{background:var(--gold-lt);transform:translateY(-2px);box-shadow:0 8px 25px rgba(201,168,76,0.3);}
+        .btn-outline{border:1px solid var(--cream);color:var(--cream);background:transparent;}
+        .btn-outline:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.06);}
+        .btn-wa{
+            display:inline-flex;align-items:center;gap:0.75rem;
+            background:var(--green);color:#fff;
+            text-decoration:none;padding:1rem 2.5rem;
+            font-family:'Raleway',sans-serif;font-weight:700;
+            font-size:0.95rem;border-radius:50px;
+            box-shadow:0 4px 20px rgba(37,211,102,0.4);
+            transition:all 0.3s;
+        }
+        .btn-wa:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(37,211,102,0.5);}
+        .btn-wa svg{width:22px;height:22px;flex-shrink:0;}
+
+        /* Featured treats strip */
+        .featured{
+            padding:4rem 3rem;background:var(--dark2);
+        }
+        .featured-hd{
+            display:flex;align-items:baseline;gap:1rem;margin-bottom:2rem;
+        }
+        .s-tag{
+            font-size:0.68rem;letter-spacing:5px;
+            text-transform:uppercase;color:var(--gold);
+        }
+        .s-title{
+            font-family:'Playfair Display',serif;
+            font-size:clamp(1.6rem,3vw,2.5rem);
+            color:var(--cream);line-height:1.2;
+        }
+        .s-sub{
+            color:rgba(242,217,200,0.65);
+            font-weight:300;line-height:1.85;
+        }
+        .divider{width:50px;height:2px;background:var(--gold);margin:1.2rem 0;}
+        .divider.c{margin:1.2rem auto;}
+        .feat-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+            gap:1.2rem;
+        }
+        .feat-card{
+            border-radius:6px;overflow:hidden;
+            border:1px solid rgba(201,168,76,0.12);
+            cursor:pointer;transition:all 0.3s;
+            background:var(--dark);
+        }
+        .feat-card:hover{transform:translateY(-5px);border-color:rgba(201,168,76,0.35);box-shadow:0 15px 35px rgba(0,0,0,0.4);}
+        .feat-img{
+            height:160px;overflow:hidden;position:relative;
+            display:flex;align-items:center;justify-content:center;font-size:2.5rem;
+        }
+        .feat-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;}
+        .feat-body{padding:1rem;}
+        .feat-name{
+            font-family:'Playfair Display',serif;
+            font-size:1rem;color:var(--cream);margin-bottom:0.2rem;
+        }
+        .feat-sub{font-size:0.72rem;color:rgba(242,217,200,0.5);}
+
+        /* Home CTA strip */
+        .home-cta{
+            padding:5rem 3rem;
+            background:linear-gradient(135deg,#450A25,#1A060E,#240A18);
+            text-align:center;
+        }
+        .home-cta .s-sub{max-width:500px;margin:0 auto 2.5rem;}
+
+        /* ── MENU PAGE ── */
+        .page-inner{padding:4rem 3rem;}
+        .page-hd{margin-bottom:3rem;}
+        .menu-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+            gap:2rem;
+        }
+        .card{
+            background:var(--dark2);border-radius:6px;overflow:hidden;
+            border:1px solid rgba(201,168,76,0.1);
+            transition:transform 0.3s,box-shadow 0.3s,border-color 0.3s;
+        }
+        .card:hover{
+            transform:translateY(-7px);
+            box-shadow:0 20px 40px rgba(0,0,0,0.45);
+            border-color:rgba(201,168,76,0.3);
+        }
+        .card-img{
+            height:220px;overflow:hidden;position:relative;
+            display:flex;align-items:center;justify-content:center;
+            font-size:3rem;
+        }
+        .card-img img{
+            position:absolute;inset:0;
+            width:100%;height:100%;object-fit:contain;
+            transition:transform 0.4s;
+        }
+        .card:hover .card-img img{transform:scale(1.06);}
+        .card-img .fallback{
+            position:absolute;inset:0;
+            display:flex;align-items:center;justify-content:center;
+            font-size:3rem;z-index:1;
+        }
+        .ci1{background:linear-gradient(135deg,#7A1A3A,#E8436A);}
+        .ci2{background:linear-gradient(135deg,#5C0A2A,#C2185B);}
+        .ci3{background:linear-gradient(135deg,#8B0045,#E91E8C);}
+        .ci4{background:linear-gradient(135deg,#4A0020,#AD1457);}
+        .ci5{background:linear-gradient(135deg,#880E4F,#E91E63);}
+        .ci6{background:linear-gradient(135deg,#1A060E,#7A1A3A);}
+        .card-body{padding:1.5rem;}
+        .card-title{
+            font-family:'Playfair Display',serif;
+            font-size:1.25rem;color:var(--cream);margin-bottom:0.5rem;
+        }
+        .card-desc{
+            font-size:0.83rem;color:rgba(242,217,200,0.6);
+            line-height:1.75;margin-bottom:1rem;
+        }
+        .tag{
+            display:inline-block;
+            background:rgba(201,168,76,0.1);
+            border:1px solid rgba(201,168,76,0.3);
+            color:var(--gold);font-size:0.66rem;
+            letter-spacing:2px;text-transform:uppercase;
+            padding:0.25rem 0.75rem;border-radius:2px;
+        }
+        .tag.pink{
+            background:rgba(232,160,191,0.1);
+            border-color:rgba(232,160,191,0.3);
+            color:var(--blush);
+        }
+
+        /* ── PRE-ORDER PAGE ── */
+        .preorder-wrap{
+            max-width:760px;margin:0 auto;
+            text-align:center;padding:4rem 3rem;
+        }
+        .days-grid{
+            display:grid;grid-template-columns:repeat(3,1fr);
+            gap:1.5rem;margin:3rem auto;max-width:580px;
+        }
+        .day{
+            border:1px solid rgba(201,168,76,0.3);
+            padding:2rem 1rem;border-radius:6px;
+            background:rgba(201,168,76,0.04);transition:all 0.3s;
+        }
+        .day:hover{background:rgba(201,168,76,0.1);border-color:var(--gold);}
+        .day-name{
+            font-family:'Playfair Display',serif;
+            font-size:1.2rem;color:var(--gold);margin-bottom:0.4rem;
+        }
+        .day-info{font-size:0.72rem;color:rgba(242,217,200,0.55);letter-spacing:1px;}
+        .note{
+            background:rgba(232,160,191,0.08);
+            border:1px solid rgba(232,160,191,0.25);
+            color:var(--blush);padding:1rem 1.8rem;
+            border-radius:6px;font-size:0.88rem;
+            line-height:1.8;margin-bottom:2.5rem;
+        }
+        .steps{
+            text-align:left;max-width:480px;
+            margin:2.5rem auto;list-style:none;
+        }
+        .steps li{
+            display:flex;gap:1rem;align-items:flex-start;
+            padding:1rem 0;border-bottom:1px solid rgba(201,168,76,0.1);
+        }
+        .steps li:last-child{border-bottom:none;}
+        .step-n{
+            background:var(--gold);color:var(--dark);
+            width:28px;height:28px;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            font-size:0.78rem;font-weight:700;flex-shrink:0;
+        }
+        .step-text{font-size:0.88rem;color:rgba(242,217,200,0.75);line-height:1.6;}
+
+        /* ── ORDER PAGE ── */
+        .order-wrap{
+            display:grid;grid-template-columns:1fr 1fr;
+            gap:3rem;padding:4rem 3rem;align-items:start;
+        }
+        .order-info{padding:2rem 0;}
+        .order-cta-box{
+            background:var(--gold);border-radius:10px;
+            padding:3rem 2.5rem;text-align:center;
+        }
+        .order-cta-box .s-title{color:var(--dark);}
+        .order-cta-box p{color:rgba(28,10,0,0.65);font-size:0.9rem;line-height:1.8;margin-bottom:2rem;}
+        .order-steps{margin:2rem 0;}
+        .order-step{
+            display:flex;gap:1rem;align-items:flex-start;
+            padding:0.8rem 0;
+        }
+        .os-icon{font-size:1.3rem;width:30px;flex-shrink:0;}
+        .os-text h4{font-size:0.88rem;color:var(--cream);margin-bottom:0.2rem;}
+        .os-text p{font-size:0.8rem;color:rgba(242,217,200,0.55);line-height:1.5;}
+
+        /* ── ABOUT PAGE ── */
+        .about-wrap{
+            display:grid;grid-template-columns:1fr 1fr;
+            gap:4rem;padding:4rem 3rem;align-items:center;
+        }
+        .about-img{
+            border-radius:8px;overflow:hidden;
+            aspect-ratio:4/5;
+            background:linear-gradient(145deg,#3D1515,#5C2020);
+            display:flex;align-items:center;justify-content:center;
+            font-family:'Playfair Display',serif;
+            font-size:6rem;font-style:italic;
+            color:rgba(201,168,76,0.12);
+            position:relative;
+        }
+        .about-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;}
+        .stats{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2.5rem;}
+        .stat{border-left:2px solid var(--gold);padding-left:1rem;}
+        .stat-n{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold);}
+        .stat-l{font-size:0.7rem;letter-spacing:1px;text-transform:uppercase;color:rgba(242,217,200,0.5);}
+
+        /* ── FOLLOW PAGE ── */
+        .follow-wrap{padding:4rem 3rem;text-align:center;}
+        .social-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+            gap:1.5rem;max-width:800px;margin:3rem auto 0;
+        }
+        .soc{
+            display:flex;flex-direction:column;align-items:center;gap:0.75rem;
+            padding:2.5rem 1rem;
+            border:1px solid rgba(201,168,76,0.12);border-radius:8px;
+            text-decoration:none;color:var(--cream);
+            background:rgba(201,168,76,0.02);transition:all 0.3s;
+        }
+        .soc:hover{border-color:var(--gold);background:rgba(201,168,76,0.08);transform:translateY(-5px);}
+        .soc svg{width:40px;height:40px;}
+        .soc-name{font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+        .soc-handle{font-size:0.72rem;color:rgba(242,217,200,0.45);}
+
+        /* ── CHATBOT ── */
+        .chat-fab{
+            position:fixed;bottom:2rem;right:2rem;
+            width:58px;height:58px;border-radius:50%;
+            background:var(--gold);color:var(--dark);
+            display:flex;align-items:center;justify-content:center;
+            cursor:pointer;border:none;
+            box-shadow:0 4px 20px rgba(201,168,76,0.5);
+            z-index:9999;transition:all 0.3s;font-size:1.5rem;
+        }
+        .chat-fab:hover{transform:scale(1.1);box-shadow:0 8px 30px rgba(201,168,76,0.6);}
+        .chat-fab .badge-dot{
+            position:absolute;top:4px;right:4px;
+            width:12px;height:12px;background:#ff4444;
+            border-radius:50%;border:2px solid var(--sb);
+        }
+        .chat-window{
+            position:fixed;bottom:5.5rem;right:2rem;
+            width:340px;max-height:520px;
+            background:#1a0800;
+            border:1px solid rgba(201,168,76,0.25);
+            border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.6);
+            display:flex;flex-direction:column;
+            z-index:9998;
+            transform:scale(0.9) translateY(20px);
+            transform-origin:bottom right;
+            opacity:0;pointer-events:none;
+            transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .chat-window.open{
+            transform:scale(1) translateY(0);
+            opacity:1;pointer-events:all;
+        }
+        .chat-header{
+            display:flex;align-items:center;gap:0.75rem;
+            padding:1rem 1.2rem;
+            background:var(--gold);border-radius:16px 16px 0 0;
+        }
+        .chat-avatar{
+            width:36px;height:36px;border-radius:50%;
+            background:var(--dark);
+            display:flex;align-items:center;justify-content:center;
+            font-size:1.1rem;flex-shrink:0;
+        }
+        .chat-hd-info{flex:1;}
+        .chat-hd-name{font-size:0.9rem;font-weight:700;color:var(--dark);}
+        .chat-hd-status{font-size:0.68rem;color:rgba(28,10,0,0.6);}
+        .chat-close{
+            background:none;border:none;cursor:pointer;
+            font-size:1.2rem;color:rgba(28,10,0,0.6);transition:color 0.2s;
+            padding:4px;
+        }
+        .chat-close:hover{color:var(--dark);}
+        .chat-msgs{
+            flex:1;overflow-y:auto;padding:1rem;
+            display:flex;flex-direction:column;gap:0.75rem;
+            max-height:320px;
+        }
+        .chat-msgs::-webkit-scrollbar{width:4px;}
+        .chat-msgs::-webkit-scrollbar-thumb{background:rgba(201,168,76,0.3);border-radius:2px;}
+        .msg{
+            max-width:82%;padding:0.65rem 0.9rem;
+            border-radius:12px;font-size:0.82rem;
+            line-height:1.6;word-wrap:break-word;
+            white-space:pre-wrap;
+        }
+        .msg.bot{
+            background:rgba(201,168,76,0.12);
+            border:1px solid rgba(201,168,76,0.2);
+            color:var(--cream);align-self:flex-start;
+            border-bottom-left-radius:4px;
+        }
+        .msg.user{
+            background:var(--gold);color:var(--dark);
+            align-self:flex-end;font-weight:600;
+            border-bottom-right-radius:4px;
+        }
+        .quick-replies{
+            display:flex;flex-wrap:wrap;gap:0.4rem;
+            padding:0 1rem 0.75rem;
+        }
+        .qr{
+            background:rgba(201,168,76,0.08);
+            border:1px solid rgba(201,168,76,0.25);
+            color:var(--gold);font-size:0.7rem;
+            padding:0.35rem 0.7rem;border-radius:20px;
+            cursor:pointer;transition:all 0.2s;
+            font-family:'Raleway',sans-serif;
+        }
+        .qr:hover{background:rgba(201,168,76,0.2);border-color:var(--gold);}
+        .chat-input-row{
+            display:flex;gap:0.5rem;
+            padding:0.75rem 1rem;
+            border-top:1px solid rgba(201,168,76,0.1);
+        }
+        .chat-input{
+            flex:1;background:rgba(255,255,255,0.06);
+            border:1px solid rgba(201,168,76,0.2);
+            color:var(--cream);border-radius:20px;
+            padding:0.5rem 1rem;font-size:0.82rem;
+            font-family:'Raleway',sans-serif;outline:none;
+            transition:border-color 0.2s;
+        }
+        .chat-input:focus{border-color:var(--gold);}
+        .chat-input::placeholder{color:rgba(242,217,200,0.35);}
+        .chat-send{
+            background:var(--gold);border:none;
+            width:36px;height:36px;border-radius:50%;
+            cursor:pointer;display:flex;align-items:center;
+            justify-content:center;flex-shrink:0;
+            transition:all 0.2s;
+        }
+        .chat-send:hover{background:var(--gold-lt);}
+        .chat-send svg{width:16px;height:16px;}
+        .typing{
+            display:flex;gap:4px;padding:0.6rem 0.9rem;
+            background:rgba(201,168,76,0.1);border-radius:12px;
+            border-bottom-left-radius:4px;align-self:flex-start;
+            border:1px solid rgba(201,168,76,0.2);
+        }
+        .typing span{
+            width:7px;height:7px;background:var(--gold);border-radius:50%;
+            animation:bounce 1.2s infinite;
+        }
+        .typing span:nth-child(2){animation-delay:0.2s;}
+        .typing span:nth-child(3){animation-delay:0.4s;}
+        @keyframes bounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-6px);}}
+
+        /* ── CARD PRICE & ORDER ── */
+        .card-footer{
+            display:flex;align-items:center;justify-content:space-between;
+            margin-top:1rem;padding-top:0.8rem;
+            border-top:1px solid rgba(201,168,76,0.12);gap:0.5rem;flex-wrap:wrap;
+        }
+        .card-price{
+            font-family:'Playfair Display',serif;
+            font-size:1.1rem;color:var(--gold);font-weight:600;
+        }
+        .card-price span{font-size:0.65rem;color:rgba(242,217,200,0.4);font-family:'Raleway',sans-serif;font-weight:400;margin-left:3px;}
+        .btn-order-item{
+            display:inline-flex;align-items:center;gap:0.35rem;
+            background:var(--gold);color:var(--dark);
+            border:none;border-radius:4px;cursor:pointer;
+            padding:0.45rem 1.1rem;font-size:0.72rem;font-weight:700;
+            letter-spacing:1.5px;text-transform:uppercase;
+            font-family:'Raleway',sans-serif;transition:all 0.2s;
+        }
+        .btn-order-item:hover{background:var(--gold-lt);transform:translateY(-1px);}
+
+        /* ── PACKAGE BUILDER ── */
+        .pkg-wrap{
+            display:grid;grid-template-columns:1fr 320px;
+            gap:2rem;padding:4rem 3rem;align-items:start;
+        }
+        .pkg-items-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+            gap:1.4rem;
+        }
+        .pkg-item{
+            background:var(--dark2);border-radius:6px;overflow:hidden;
+            border:1px solid rgba(201,168,76,0.1);transition:all 0.3s;
+        }
+        .pkg-item:hover{border-color:rgba(201,168,76,0.3);transform:translateY(-4px);}
+        .pkg-item-img{height:160px;overflow:hidden;position:relative;background:#1a060e;}
+        .pkg-item-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;}
+        .pkg-item-body{padding:0.9rem;}
+        .pkg-item-name{font-family:'Playfair Display',serif;font-size:0.95rem;color:var(--cream);margin-bottom:0.15rem;}
+        .pkg-item-unit{font-size:0.68rem;color:rgba(242,217,200,0.4);margin-bottom:0.5rem;}
+        .pkg-item-price{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--gold);font-weight:600;margin-bottom:0.7rem;}
+        .pkg-qty-row{display:flex;align-items:center;gap:0.5rem;}
+        .qty-btn{
+            width:28px;height:28px;border-radius:50%;
+            background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);
+            color:var(--gold);font-size:1rem;font-weight:700;
+            cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;
+        }
+        .qty-btn:hover{background:rgba(201,168,76,0.3);border-color:var(--gold);}
+        .qty-display{min-width:24px;text-align:center;font-weight:700;font-size:0.9rem;color:var(--cream);}
+        .btn-add-pkg{
+            flex:1;background:rgba(201,168,76,0.1);
+            border:1px solid rgba(201,168,76,0.3);color:var(--gold);border-radius:4px;
+            padding:0.35rem 0.5rem;font-size:0.68rem;font-weight:700;letter-spacing:1px;
+            text-transform:uppercase;font-family:'Raleway',sans-serif;cursor:pointer;transition:all 0.2s;
+        }
+        .btn-add-pkg:hover,.btn-add-pkg.added{background:var(--gold);color:var(--dark);}
+
+        /* ── PACKAGE SUMMARY ── */
+        .pkg-summary{
+            background:var(--dark2);border-radius:10px;
+            border:1px solid rgba(201,168,76,0.18);
+            padding:1.6rem;position:sticky;top:2rem;
+        }
+        .pkg-summary-title{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--cream);}
+        .pkg-empty{text-align:center;padding:1.8rem 0;color:rgba(242,217,200,0.32);font-size:0.82rem;line-height:1.9;}
+        .pkg-lines{list-style:none;margin:0.5rem 0;}
+        .pkg-line{
+            display:flex;align-items:center;
+            padding:0.5rem 0;border-bottom:1px solid rgba(201,168,76,0.07);font-size:0.8rem;
+        }
+        .pkg-line-name{color:rgba(242,217,200,0.8);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+        .pkg-line-qty{color:var(--gold);font-weight:700;margin:0 0.4rem;min-width:22px;text-align:center;}
+        .pkg-line-price{color:var(--cream);font-weight:600;min-width:72px;text-align:right;}
+        .pkg-line-rm{background:none;border:none;color:rgba(232,160,191,0.4);cursor:pointer;font-size:0.85rem;margin-left:0.4rem;transition:color 0.2s;padding:0 2px;}
+        .pkg-line-rm:hover{color:var(--blush);}
+        .pkg-total-row{display:flex;justify-content:space-between;align-items:center;padding:0.9rem 0 0.4rem;border-top:2px solid rgba(201,168,76,0.2);margin-top:0.4rem;}
+        .pkg-total-label{font-size:0.68rem;letter-spacing:3px;text-transform:uppercase;color:rgba(242,217,200,0.45);}
+        .pkg-total-amt{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--gold);font-weight:700;}
+        .btn-pkg-order{
+            display:flex;align-items:center;justify-content:center;gap:0.55rem;
+            width:100%;background:var(--green);color:#fff;border:none;border-radius:8px;
+            padding:0.85rem;font-family:'Raleway',sans-serif;font-weight:700;
+            font-size:0.82rem;letter-spacing:1px;cursor:pointer;transition:all 0.3s;margin-top:0.9rem;
+        }
+        .btn-pkg-order:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-2px);}
+        .btn-pkg-order:disabled{opacity:0.4;cursor:not-allowed;}
+        .btn-pkg-order svg{width:17px;height:17px;flex-shrink:0;}
+        .btn-pkg-clear{
+            width:100%;background:none;border:1px solid rgba(232,160,191,0.18);
+            color:rgba(232,160,191,0.45);border-radius:6px;padding:0.45rem;
+            font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;
+            cursor:pointer;transition:all 0.2s;margin-top:0.5rem;font-family:'Raleway',sans-serif;
+        }
+        .btn-pkg-clear:hover{border-color:var(--blush);color:var(--blush);}
+        .pkg-min-note{font-size:0.63rem;color:rgba(242,217,200,0.32);margin-bottom:0.5rem;letter-spacing:0.3px;}
+        .pkg-flavours{margin-top:0.7rem;padding-top:0.65rem;border-top:1px solid rgba(201,168,76,0.1);}
+        .pkg-flavour-label{font-size:0.6rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(242,217,200,0.35);margin-bottom:0.45rem;}
+        .pkg-flavour-pills{display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:0.45rem;}
+        .flavour-pill{
+            background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.18);
+            color:rgba(242,217,200,0.55);font-size:0.62rem;padding:0.2rem 0.55rem;
+            border-radius:20px;cursor:pointer;transition:all 0.2s;font-family:'Raleway',sans-serif;
+        }
+        .flavour-pill.active{background:rgba(201,168,76,0.22);border-color:var(--gold);color:var(--gold);font-weight:700;}
+        .flavour-other-input{
+            width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.12);
+            color:var(--cream);border-radius:4px;padding:0.3rem 0.6rem;font-size:0.72rem;
+            font-family:'Raleway',sans-serif;outline:none;box-sizing:border-box;
+        }
+        .flavour-other-input:focus{border-color:rgba(201,168,76,0.35);}
+        .flavour-other-input::placeholder{color:rgba(242,217,200,0.25);}
+        .pkg-line-info{flex:1;min-width:0;}
+        .pkg-line-flavours{font-size:0.63rem;color:rgba(242,217,200,0.38);margin-top:0.12rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+        /* ── ANNOUNCEMENT BANNER ── */
+        .announce-bar{
+            background:var(--gold);color:var(--dark);
+            display:flex;align-items:center;justify-content:center;gap:0.75rem;
+            padding:0.6rem 3rem;font-size:0.8rem;font-weight:600;letter-spacing:0.3px;
+            position:relative;
+        }
+        .announce-close{
+            position:absolute;right:1rem;top:50%;transform:translateY(-50%);
+            background:none;border:none;cursor:pointer;
+            color:rgba(28,10,0,0.45);font-size:1rem;padding:4px;transition:color 0.2s;
+        }
+        .announce-close:hover{color:var(--dark);}
+
+        /* ── COUNTDOWN STRIP ── */
+        .countdown-strip{
+            background:var(--dark2);border-bottom:1px solid rgba(201,168,76,0.12);
+            padding:1.4rem 3rem;display:flex;align-items:center;
+            justify-content:center;gap:2rem;flex-wrap:wrap;
+        }
+        .cd-label{font-size:0.68rem;letter-spacing:3px;text-transform:uppercase;color:rgba(242,217,200,0.5);text-align:center;}
+        .cd-label strong{color:var(--gold);display:block;font-size:0.9rem;letter-spacing:1px;margin-top:2px;}
+        .cd-blocks{display:flex;gap:0.6rem;align-items:center;}
+        .cd-block{display:flex;flex-direction:column;align-items:center;gap:0.25rem;}
+        .cd-num{
+            font-family:'Playfair Display',serif;font-size:1.9rem;color:var(--cream);font-weight:700;
+            background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.18);
+            border-radius:6px;width:54px;display:flex;align-items:center;justify-content:center;
+            padding:0.25rem 0;line-height:1;
+        }
+        .cd-unit{font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:rgba(242,217,200,0.3);}
+        .cd-sep{font-family:'Playfair Display',serif;font-size:1.4rem;color:rgba(201,168,76,0.4);padding-bottom:1rem;}
+        .btn-cd-preorder{
+            background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);
+            color:var(--gold);padding:0.55rem 1.4rem;border-radius:4px;
+            font-size:0.72rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+            cursor:pointer;transition:all 0.2s;font-family:'Raleway',sans-serif;
+        }
+        .btn-cd-preorder:hover{background:rgba(201,168,76,0.2);border-color:var(--gold);}
+
+        /* ── TESTIMONIALS ── */
+        .testimonials-wrap{padding:4rem 3rem;}
+        .testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(275px,1fr));gap:1.8rem;margin-top:2.5rem;}
+        .testi-card{
+            background:var(--dark2);border-radius:8px;padding:2rem;
+            border:1px solid rgba(201,168,76,0.1);position:relative;transition:all 0.3s;
+        }
+        .testi-card:hover{border-color:rgba(201,168,76,0.25);transform:translateY(-4px);}
+        .testi-quote{
+            font-size:3.5rem;color:var(--gold);opacity:0.18;line-height:1;
+            font-family:'Playfair Display',serif;position:absolute;top:1rem;left:1.5rem;
+        }
+        .testi-stars{color:var(--gold);font-size:0.8rem;letter-spacing:2px;margin-bottom:0.75rem;}
+        .testi-text{font-size:0.86rem;color:rgba(242,217,200,0.72);line-height:1.9;font-style:italic;margin-top:0.5rem;}
+        .testi-author{margin-top:1.2rem;display:flex;align-items:center;gap:0.75rem;}
+        .testi-avatar{
+            width:38px;height:38px;border-radius:50%;flex-shrink:0;
+            display:flex;align-items:center;justify-content:center;
+            font-size:0.9rem;font-weight:700;color:#fff;
+        }
+        .testi-name{font-size:0.82rem;color:var(--cream);font-weight:600;}
+        .testi-loc{font-size:0.68rem;color:rgba(242,217,200,0.35);}
+        .testi-cta{
+            text-align:center;margin-top:3rem;padding:2rem;
+            border:1px dashed rgba(201,168,76,0.2);border-radius:8px;
+        }
+        .testi-cta p{font-size:0.85rem;color:rgba(242,217,200,0.55);margin-bottom:1rem;}
+
+        /* ── GALLERY ── */
+        .gallery-wrap{padding:4rem 3rem;}
+        .gallery-grid{columns:3;column-gap:1rem;margin-top:2.5rem;}
+        .g-item{
+            break-inside:avoid;margin-bottom:1rem;border-radius:6px;overflow:hidden;
+            border:1px solid rgba(201,168,76,0.1);cursor:zoom-in;position:relative;transition:all 0.3s;
+        }
+        .g-item:hover{border-color:rgba(201,168,76,0.4);transform:scale(1.01);z-index:2;}
+        .g-item img{width:100%;display:block;object-fit:cover;}
+        .g-overlay{
+            position:absolute;inset:0;background:rgba(26,6,14,0.55);
+            display:flex;align-items:flex-end;padding:0.75rem;
+            opacity:0;transition:opacity 0.3s;
+        }
+        .g-item:hover .g-overlay{opacity:1;}
+        .g-label{color:var(--gold);font-size:0.68rem;letter-spacing:2.5px;text-transform:uppercase;}
+
+        /* ── FAQ ── */
+        .faq-wrap{padding:4rem 3rem;max-width:820px;}
+        .faq-list{margin-top:2rem;}
+        .faq-item{border-bottom:1px solid rgba(201,168,76,0.1);}
+        .faq-q{
+            display:flex;align-items:center;justify-content:space-between;
+            padding:1.2rem 0;cursor:pointer;
+            font-size:0.9rem;font-weight:600;color:var(--cream);transition:color 0.2s;gap:1rem;
+        }
+        .faq-q:hover,.faq-q.open{color:var(--gold);}
+        .faq-icon{font-size:1.1rem;color:var(--gold);flex-shrink:0;transition:transform 0.3s;}
+        .faq-q.open .faq-icon{transform:rotate(45deg);}
+        .faq-a{max-height:0;overflow:hidden;transition:max-height 0.35s ease;}
+        .faq-a.open{max-height:400px;}
+        .faq-a p{font-size:0.83rem;color:rgba(242,217,200,0.62);line-height:1.9;padding-bottom:1.2rem;}
+
+        /* ── SEASONAL SPECIALS ── */
+        .seasonal-wrap{padding:4rem 3rem;}
+        .seasonal-hero{
+            background:linear-gradient(135deg,#450A25 0%,#8B0040 50%,#1A060E 100%);
+            border-radius:12px;padding:3rem 2rem;margin-bottom:3rem;
+            text-align:center;position:relative;overflow:hidden;
+            border:1px solid rgba(201,168,76,0.2);
+        }
+        .seasonal-hero::before{
+            content:'';position:absolute;inset:0;opacity:0.5;
+            background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9A84C' fill-opacity='0.07'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
+        }
+        .seasonal-hero .badge{position:relative;}
+        .seasonal-hero h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);color:var(--cream);margin:1rem 0;position:relative;}
+        .seasonal-hero h2 em{color:var(--blush);font-style:italic;}
+        .seasonal-hero p{font-size:0.9rem;color:rgba(242,217,200,0.65);max-width:500px;margin:0 auto 1.8rem;line-height:1.9;position:relative;}
+        .specials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.5rem;}
+        .special-card{
+            background:var(--dark2);border-radius:8px;padding:1.8rem;
+            border:1px solid rgba(201,168,76,0.12);transition:all 0.3s;
+        }
+        .special-card:hover{border-color:rgba(201,168,76,0.3);transform:translateY(-4px);}
+        .special-icon{font-size:2.5rem;margin-bottom:0.75rem;}
+        .special-name{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--cream);margin-bottom:0.4rem;}
+        .special-desc{font-size:0.8rem;color:rgba(242,217,200,0.55);line-height:1.8;margin-bottom:0.75rem;}
+        .special-tag{font-size:0.63rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--blush);}
+
+        /* ── SHARE BUTTON ── */
+        .share-row{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;margin-top:1.8rem;}
+        .btn-share{
+            display:inline-flex;align-items:center;gap:0.5rem;
+            border:1px solid rgba(201,168,76,0.3);color:var(--gold);
+            background:rgba(201,168,76,0.06);border-radius:50px;
+            padding:0.55rem 1.4rem;font-size:0.72rem;font-weight:700;letter-spacing:1.5px;
+            text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-family:'Raleway',sans-serif;
+            text-decoration:none;
+        }
+        .btn-share:hover{background:rgba(201,168,76,0.15);border-color:var(--gold);}
+
+        /* ── RESPONSIVE ── */
+        @media(max-width:900px){
+            .pkg-wrap{grid-template-columns:1fr;}
+            .pkg-summary{position:static;}
+            .order-wrap{grid-template-columns:1fr;}
+            .about-wrap{grid-template-columns:1fr;gap:2.5rem;}
+            .about-img{max-height:260px;aspect-ratio:unset;}
+        }
+        @media(max-width:768px){
+            .sidebar{transform:translateX(-100%);}
+            .sidebar.open{transform:translateX(0);}
+            .topbar{display:flex;}
+            .main{margin-left:0;}
+            .page-inner,.preorder-wrap,.order-wrap,.about-wrap,.follow-wrap{padding:2rem 1.5rem;}
+            .hero{padding:5rem 1.5rem 3rem;}
+            .featured{padding:3rem 1.5rem;}
+            .home-cta{padding:3rem 1.5rem;}
+            .days-grid{grid-template-columns:1fr;max-width:240px;}
+            .chat-window{width:300px;right:1rem;}
+            .chat-fab{bottom:1.5rem;right:1rem;}
+            .countdown-strip{padding:1.2rem 1.5rem;gap:1rem;}
+            .gallery-grid{columns:2;}
+            .gallery-wrap,.testimonials-wrap,.faq-wrap,.seasonal-wrap{padding:2rem 1.5rem;}
+            .announce-bar{font-size:0.72rem;padding:0.5rem 2rem;}
+            .cd-num{font-size:1.4rem;width:44px;}
+        }
+        @media(max-width:480px){
+            .gallery-grid{columns:1;}
+        }
+    </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+    <div class="sb-top">
+        <a class="sb-logo" href="#" onclick="showPage('home')">Velvet <span>Crumb</span></a>
+        <div class="sb-tagline">Premium Artisan Treats</div>
+    </div>
+    <nav class="sb-nav">
+        <div class="sb-section-label">Shop</div>
+        <a class="sb-link active" data-page="home" onclick="showPage('home')">
+            <span class="icon">🏠</span> Home
+        </a>
+        <a class="sb-link" data-page="menu" onclick="showPage('menu')">
+            <span class="icon">🍪</span> Our Menu
+        </a>
+        <a class="sb-link" data-page="package" onclick="showPage('package')">
+            <span class="icon">🎁</span> Build a Package
+        </a>
+        <a class="sb-link" data-page="seasonal" onclick="showPage('seasonal')">
+            <span class="icon">🌟</span> Seasonal Specials
+        </a>
+        <div class="sb-section-label" style="margin-top:0.5rem;">Order</div>
+        <a class="sb-link" data-page="preorder" onclick="showPage('preorder')">
+            <span class="icon">📦</span> Pre-Order
+        </a>
+        <a class="sb-link" data-page="order" onclick="showPage('order')">
+            <span class="icon">💬</span> Order Now
+        </a>
+        <div class="sb-section-label" style="margin-top:0.5rem;">Discover</div>
+        <a class="sb-link" data-page="gallery" onclick="showPage('gallery')">
+            <span class="icon">📸</span> Gallery
+        </a>
+        <a class="sb-link" data-page="testimonials" onclick="showPage('testimonials')">
+            <span class="icon">⭐</span> Reviews
+        </a>
+        <a class="sb-link" data-page="faq" onclick="showPage('faq')">
+            <span class="icon">❓</span> FAQ
+        </a>
+        <a class="sb-link" data-page="about" onclick="showPage('about')">
+            <span class="icon">🫶</span> About Us
+        </a>
+        <a class="sb-link" data-page="follow" onclick="showPage('follow')">
+            <span class="icon">📱</span> Follow Us
+        </a>
+    </nav>
+    <div class="sb-bottom">
+        <div class="sb-socials">
+            <!-- Update hrefs with real social links -->
+            <a class="sb-soc" href="#" id="sb-ig" target="_blank" title="Instagram">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#E8A0BF" stroke-width="1.8">
+                    <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#E8A0BF" stroke="none"/>
+                </svg>
+            </a>
+            <a class="sb-soc" href="#" id="sb-tt" target="_blank" title="TikTok">
+                <svg viewBox="0 0 24 24" fill="#C9A84C">
+                    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/>
+                </svg>
+            </a>
+            <a class="sb-soc" href="#" id="sb-fb" target="_blank" title="Facebook">
+                <svg viewBox="0 0 24 24" fill="#C9A84C">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+            </a>
+            <a class="sb-soc" href="https://wa.me/254796809106" target="_blank" title="WhatsApp">
+                <svg viewBox="0 0 24 24" fill="#25D366">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+            </a>
+        </div>
+        <a class="sb-wa" href="https://wa.me/254796809106?text=Hi%20Velvet%20Crumb!%20I'd%20like%20to%20place%20an%20order." target="_blank">
+            <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Order Now
+        </a>
+    </div>
+</aside>
+
+<!-- OVERLAY (mobile) -->
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- MAIN -->
+<main class="main">
+
+    <!-- ANNOUNCEMENT BANNER -->
+    <div class="announce-bar" id="announceBar">
+        <span>🎉</span>
+        <span id="announceText">Baking this <strong>Friday &amp; Saturday</strong> — pre-orders close Thursday midnight!</span>
+        <button class="announce-close" onclick="dismissBanner()" title="Dismiss">✕</button>
+    </div>
+
+    <!-- Mobile top bar -->
+    <div class="topbar">
+        <a class="topbar-logo" href="#" onclick="showPage('home')">Velvet <span>Crumb</span></a>
+        <button class="ham" onclick="openSidebar()">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+
+    <!-- ══ HOME ══ -->
+    <div class="page active" id="page-home">
+        <section class="hero">
+            <div class="hero-inner">
+                <div class="badge">Handcrafted &nbsp;·&nbsp; Premium &nbsp;·&nbsp; Made to Order</div>
+                <h1>Where Every Bite<br>Feels Like <em>Velvet</em></h1>
+                <p>Indulge in artisan treats handcrafted with love — from show-stopping cake pops to melt-in-your-mouth cookies. Premium quality, delivered to your door in Nairobi.</p>
+                <div class="hero-btns">
+                    <button class="btn btn-gold" onclick="showPage('menu')">Explore Our Menu</button>
+                    <button class="btn btn-outline" onclick="showPage('preorder')">Upcoming Sales Days</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- COUNTDOWN STRIP -->
+        <div class="countdown-strip">
+            <div class="cd-label">Next baking day<strong id="cd-day">Friday</strong></div>
+            <div class="cd-blocks">
+                <div class="cd-block"><div class="cd-num" id="cd-d">00</div><div class="cd-unit">Days</div></div>
+                <span class="cd-sep">:</span>
+                <div class="cd-block"><div class="cd-num" id="cd-h">00</div><div class="cd-unit">Hrs</div></div>
+                <span class="cd-sep">:</span>
+                <div class="cd-block"><div class="cd-num" id="cd-m">00</div><div class="cd-unit">Min</div></div>
+                <span class="cd-sep">:</span>
+                <div class="cd-block"><div class="cd-num" id="cd-s">00</div><div class="cd-unit">Sec</div></div>
+            </div>
+            <button class="btn-cd-preorder" onclick="showPage('preorder')">Pre-Order Now →</button>
+        </div>
+
+        <section class="featured">
+            <div class="featured-hd">
+                <div>
+                    <span class="s-tag">Our Treats</span>
+                    <h2 class="s-title">Signature Creations</h2>
+                    <div class="divider"></div>
+                </div>
+            </div>
+            <div class="feat-grid">
+                <div class="feat-card" onclick="showPage('menu')">
+                    <div class="feat-img ci1">
+                        <img src="images/cake-pops.jpg" alt="Cake Pops">
+                    </div>
+                    <div class="feat-body">
+                        <div class="feat-name">Cake Pops</div>
+                        <div class="feat-sub">Chocolate coated · Handdecorated</div>
+                    </div>
+                </div>
+                <div class="feat-card" onclick="showPage('menu')">
+                    <div class="feat-img ci2">
+                        <img src="images/cakescicles.jpg" alt="Cakesicles">
+                    </div>
+                    <div class="feat-body">
+                        <div class="feat-name">Cakesicles</div>
+                        <div class="feat-sub">Thick shell · Moist filling</div>
+                    </div>
+                </div>
+                <div class="feat-card" onclick="showPage('menu')">
+                    <div class="feat-img ci3">
+                        <img src="images/cookies.jpg" alt="Artisan Cookies">
+                    </div>
+                    <div class="feat-body">
+                        <div class="feat-name">Artisan Cookies</div>
+                        <div class="feat-sub">Thin & crispy · Thick & chewy</div>
+                    </div>
+                </div>
+                <div class="feat-card" onclick="showPage('menu')">
+                    <div class="feat-img ci4">
+                        <img src="images/banana-bread.jpg" alt="Banana Bread">
+                    </div>
+                    <div class="feat-body">
+                        <div class="feat-name">Banana Bread</div>
+                        <div class="feat-sub">Moist · Spiced · Baked fresh</div>
+                    </div>
+                </div>
+                <div class="feat-card" onclick="showPage('menu')">
+                    <div class="feat-img ci5">
+                        <img src="images/cakeslices.jpg" alt="Cake Slices">
+                    </div>
+                    <div class="feat-body">
+                        <div class="feat-name">Cake Slices</div>
+                        <div class="feat-sub">Layered · Rich frosting</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="home-cta">
+            <span class="s-tag">Ready to indulge?</span>
+            <h2 class="s-title" style="margin-bottom:1rem;">Let's Make Something Sweet</h2>
+            <div class="divider c"></div>
+            <p class="s-sub">Order directly via WhatsApp — we'll confirm your treats, arrange delivery, and bring Velvet Crumb to your door.</p>
+            <a class="btn-wa" href="https://wa.me/254796809106?text=Hi%20Velvet%20Crumb!%20I'd%20like%20to%20place%20an%20order.%20What's%20available%3F" target="_blank">
+                <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Order on WhatsApp
+            </a>
+            <div class="share-row">
+                <button class="btn-share" onclick="shareVelvetCrumb()">🔗 Share with a Friend</button>
+                <button class="btn-share" onclick="showPage('testimonials')">⭐ Read Reviews</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- ══ MENU ══ -->
+    <div class="page" id="page-menu">
+        <div class="page-inner">
+            <div class="page-hd">
+                <span class="s-tag">What We Make</span>
+                <h2 class="s-title">Our Signature Treats</h2>
+                <div class="divider"></div>
+                <p class="s-sub">Every treat is handcrafted to order. Message us on WhatsApp about flavours, quantities and customisations.</p>
+            </div>
+            <div class="menu-grid">
+                <div class="card">
+                    <div class="card-img ci1">
+                        <img src="images/cake-pops.jpg" alt="Cake Pops">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Cake Pops</h3>
+                        <p class="card-desc">Moist cake centres mixed with frosting, coated in a glossy chocolate shell and elegantly decorated. Perfect for gifting, events, or personal indulgence.</p>
+                        <div class="card-footer">
+                            <div><span class="tag">Signature</span><div class="card-price" id="menu-price-cake-pops">KES 150 <span>each</span></div></div>
+                            <button class="btn-order-item" id="menu-btn-cake-pops" onclick="orderItem('Cake Pops','KES 150 each','6 pcs')">Order</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img ci2">
+                        <img src="images/cakescicles.jpg" alt="Cakesicles">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Cakesicles</h3>
+                        <p class="card-desc">The elevated cake pop — popsicle-shaped, filled with moist cake and frosting, wrapped in a thick decorated chocolate shell. A showstopper for any occasion.</p>
+                        <div class="card-footer">
+                            <div><span class="tag">Signature</span><div class="card-price" id="menu-price-cakesicles">KES 250 <span>each</span></div></div>
+                            <button class="btn-order-item" id="menu-btn-cakesicles" onclick="orderItem('Cakesicles','KES 250 each','6 pcs')">Order</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img ci3">
+                        <img src="images/cookies.jpg" alt="Artisan Cookies">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Artisan Cookies</h3>
+                        <p class="card-desc">Two styles — thin &amp; crispy for a satisfying snap, or thick &amp; chewy with a soft centre and crispy edges. Loaded with quality ingredients and baked to golden perfection.</p>
+                        <div class="card-footer">
+                            <div><span class="tag">Thin &amp; Thick</span><div class="card-price" id="menu-price-cookies">KES 100 <span>each</span></div></div>
+                            <button class="btn-order-item" id="menu-btn-cookies" onclick="orderItem('Artisan Cookies','KES 100 each','6 pcs')">Order</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img ci4">
+                        <img src="images/banana-bread.jpg" alt="Banana Bread">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Banana Bread</h3>
+                        <p class="card-desc">Moist, dense, and full of natural banana flavour. Made with ripe bananas, butter, and warm spices — the kind that disappears before it even cools down.</p>
+                        <div class="card-footer">
+                            <div><span class="tag">Baked Fresh</span><div class="card-price" id="menu-price-banana-bread">KES 600 <span>per loaf</span></div></div>
+                            <button class="btn-order-item" id="menu-btn-banana-bread" onclick="orderItem('Banana Bread','KES 600 per loaf','1 loaf')">Order</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img ci5">
+                        <img src="images/cakeslices.jpg" alt="Cake Slices">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Cake Slices</h3>
+                        <p class="card-desc">Generous slices of beautifully layered cakes with rich, decadent frosting. Flavours rotate each sales day — follow our socials to see what's coming.</p>
+                        <div class="card-footer">
+                            <div><span class="tag">Sales Days</span><div class="card-price" id="menu-price-cake-slices">KES 300 <span>per slice</span></div></div>
+                            <button class="btn-order-item" id="menu-btn-cake-slices" onclick="orderItem('Cake Slices','KES 300 per slice','4 slices')">Order</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img ci6">
+                        <img src="images/cupcakes.jpg" alt="Cupcakes">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Cupcakes</h3>
+                        <p class="card-desc">Fluffy, perfectly portioned cupcakes topped with swirls of rich buttercream frosting. Available in rotating flavours — ideal for celebrations or a sweet personal treat.</p>
+                        <div class="card-footer">
+                            <div><span class="tag">New</span><div class="card-price" id="menu-price-cupcakes">KES 180 <span>each</span></div></div>
+                            <button class="btn-order-item" id="menu-btn-cupcakes" onclick="orderItem('Cupcakes','KES 180 each','6 pcs')">Order</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background:linear-gradient(135deg,#3D0A20,#7A1A3A);overflow:hidden;position:relative;">
+                        <img src="images/muffins.jpg" alt="Muffins">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Muffins</h3>
+                        <p class="card-desc">Tender, bakery-style muffins bursting with flavour — blueberry, chocolate chip, lemon poppy seed, and more. Baked fresh with a golden domed top and soft, moist crumb.</p>
+                        <div class="card-footer">
+                            <div><span class="tag">New</span><div class="card-price" id="menu-price-muffins">KES 130 <span>each</span></div></div>
+                            <button class="btn-order-item" id="menu-btn-muffins" onclick="orderItem('Muffins','KES 130 each','6 pcs')">Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ PRE-ORDER ══ -->
+    <div class="page" id="page-preorder">
+        <div class="preorder-wrap">
+            <span class="s-tag">Sales Days</span>
+            <h2 class="s-title">Pre-Order Your Treats</h2>
+            <div class="divider c"></div>
+            <p class="s-sub">We bake on set days each week. Place your pre-order the day before and get your fresh treats delivered or ready for collection.</p>
+            <div class="days-grid">
+                <div class="day"><div class="day-name">Thursday</div><div class="day-info">Order by Wednesday</div></div>
+                <div class="day"><div class="day-name">Friday</div><div class="day-info">Order by Thursday</div></div>
+                <div class="day"><div class="day-name">Saturday</div><div class="day-info">Order by Friday</div></div>
+            </div>
+            <div class="note">📦 Sales days may vary week to week. Always confirm with us on WhatsApp before placing your order to check current availability.</div>
+            <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--cream);margin-bottom:0.5rem;">How Pre-Ordering Works</h3>
+            <ul class="steps">
+                <li><span class="step-n">1</span><span class="step-text">Check the sales days above or message us to confirm this week's baking days.</span></li>
+                <li><span class="step-n">2</span><span class="step-text">Send us a WhatsApp message the day before your chosen sales day.</span></li>
+                <li><span class="step-n">3</span><span class="step-text">Tell us what you'd like, quantity, and preferred flavours.</span></li>
+                <li><span class="step-n">4</span><span class="step-text">We confirm your order, send pricing, and arrange delivery or pickup.</span></li>
+                <li><span class="step-n">5</span><span class="step-text">Pay and receive your fresh Velvet Crumb treats! 🎉</span></li>
+            </ul>
+            <a class="btn-wa" href="https://wa.me/254796809106?text=Hi%20Velvet%20Crumb!%20I'd%20like%20to%20pre-order.%20Could%20you%20confirm%20this%20week's%20sales%20days%20and%20available%20items%3F" target="_blank">
+                <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Pre-Order via WhatsApp
+            </a>
+        </div>
+    </div>
+
+    <!-- ══ ORDER ══ -->
+    <div class="page" id="page-order">
+        <div class="order-wrap">
+            <div class="order-info">
+                <span class="s-tag">Place an Order</span>
+                <h2 class="s-title">Let's Make Something Sweet</h2>
+                <div class="divider"></div>
+                <p class="s-sub" style="margin-bottom:2rem;">Ordering from Velvet Crumb is simple and personal. We handle everything over WhatsApp so you get a direct, friendly experience every time.</p>
+                <div class="order-steps">
+                    <div class="order-step"><span class="os-icon">💬</span><div class="os-text"><h4>Message Us</h4><p>Tap the WhatsApp button and tell us what you'd like to order.</p></div></div>
+                    <div class="order-step"><span class="os-icon">✅</span><div class="os-text"><h4>We Confirm</h4><p>We'll confirm availability, pricing, and your preferred flavours.</p></div></div>
+                    <div class="order-step"><span class="os-icon">🚚</span><div class="os-text"><h4>Delivery or Pickup</h4><p>We deliver within Nairobi, or you can arrange collection.</p></div></div>
+                    <div class="order-step"><span class="os-icon">🎉</span><div class="os-text"><h4>Enjoy!</h4><p>Fresh Velvet Crumb treats made with love, delivered to you.</p></div></div>
+                </div>
+            </div>
+            <div class="order-cta-box">
+                <p style="font-size:2rem;margin-bottom:1rem;">🍭</p>
+                <h3 class="s-title">Ready to Order?</h3>
+                <p>Tap below to open a WhatsApp chat directly with us. We usually reply within a few hours!</p>
+                <a class="btn-wa" href="https://wa.me/254796809106?text=Hi%20Velvet%20Crumb!%20I'd%20like%20to%20place%20an%20order.%20What's%20currently%20available%3F" target="_blank" style="display:inline-flex;">
+                    <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    Order on WhatsApp
+                </a>
+                <p style="margin-top:1.5rem;font-size:0.75rem;color:rgba(28,10,0,0.5);">+254 796 809 106</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ ABOUT ══ -->
+    <div class="page" id="page-about">
+        <div class="about-wrap">
+            <div class="about-img">
+                <img src="images/cake-pops.jpg" alt="Velvet Crumb Treats">
+                VC
+            </div>
+            <div>
+                <span class="s-tag">Our Story</span>
+                <h2 class="s-title">Crafted with Passion,<br>Delivered with Love</h2>
+                <div class="divider"></div>
+                <p class="s-sub">Velvet Crumb was born from a simple belief — that premium treats should be beautiful, unforgettable, and worth every bite. Every item is handcrafted in small batches using quality ingredients, so each experience is one worth savoring.</p>
+                <br>
+                <p class="s-sub">We are a home-based, online-first bakery serving Nairobi and beyond. No shortcuts, no compromises — just pure artisan quality, made with heart.</p>
+                <br>
+                <p class="s-sub">From cake pops to cakesicles, from thick cookies to banana bread — everything we make is a labour of love, designed to bring joy to every bite.</p>
+                <div class="stats">
+                    <div class="stat"><div class="stat-n">100%</div><div class="stat-l">Handcrafted</div></div>
+                    <div class="stat"><div class="stat-n">Small</div><div class="stat-l">Batch Made</div></div>
+                    <div class="stat"><div class="stat-n">Fresh</div><div class="stat-l">Every Order</div></div>
+                    <div class="stat"><div class="stat-n">Made</div><div class="stat-l">With Love</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ FOLLOW ══ -->
+    <div class="page" id="page-follow">
+        <div class="follow-wrap">
+            <span class="s-tag">Stay Connected</span>
+            <h2 class="s-title">Follow Velvet Crumb</h2>
+            <div class="divider c"></div>
+            <p class="s-sub">Get first access to sales days, new flavours, behind-the-scenes content and exclusive deals. Find us on all platforms.</p>
+            <div class="social-grid">
+                <a href="#" class="soc" id="ig-link" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#E8A0BF" stroke-width="1.5">
+                        <rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#E8A0BF" stroke="none"/>
+                    </svg>
+                    <span class="soc-name">Instagram</span>
+                    <span class="soc-handle">@velvetcrumb</span>
+                </a>
+                <a href="#" class="soc" id="tt-link" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="#C9A84C">
+                        <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.27 6.27 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/>
+                    </svg>
+                    <span class="soc-name">TikTok</span>
+                    <span class="soc-handle">@velvetcrumb</span>
+                </a>
+                <a href="#" class="soc" id="fb-link" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="#C9A84C">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                    <span class="soc-name">Facebook</span>
+                    <span class="soc-handle">Velvet Crumb</span>
+                </a>
+                <a href="https://wa.me/254796809106" class="soc" target="_blank">
+                    <svg viewBox="0 0 24 24" fill="#25D366">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                    </svg>
+                    <span class="soc-name">WhatsApp</span>
+                    <span class="soc-handle">+254 796 809 106</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ TESTIMONIALS ══ -->
+    <div class="page" id="page-testimonials">
+        <div class="testimonials-wrap">
+            <div class="page-hd">
+                <span class="s-tag">Happy Customers</span>
+                <h2 class="s-title">What People Are Saying</h2>
+                <div class="divider"></div>
+                <p class="s-sub">Every order is made with love — and we're so grateful when our customers share the love back.</p>
+            </div>
+            <div class="testi-grid">
+                <div class="testi-card">
+                    <div class="testi-quote">"</div>
+                    <div class="testi-stars">★★★★★</div>
+                    <p class="testi-text">I ordered cake pops for my daughter's 7th birthday and they were absolutely stunning. Every child at the party was obsessed! The red velvet flavour was to die for. Will definitely order again.</p>
+                    <div class="testi-author">
+                        <div class="testi-avatar" style="background:linear-gradient(135deg,#7A1A3A,#E8436A);">SM</div>
+                        <div><div class="testi-name">Sarah M.</div><div class="testi-loc">Kilimani, Nairobi</div></div>
+                    </div>
+                </div>
+                <div class="testi-card">
+                    <div class="testi-quote">"</div>
+                    <div class="testi-stars">★★★★★</div>
+                    <p class="testi-text">The cakesicles are something else. I bought a box of 6 biscoff flavour and they disappeared in one sitting. The chocolate shell was thick and snappy — proper quality. Highly recommend!</p>
+                    <div class="testi-author">
+                        <div class="testi-avatar" style="background:linear-gradient(135deg,#1A3A7A,#4368E8);">JK</div>
+                        <div><div class="testi-name">James K.</div><div class="testi-loc">Westlands, Nairobi</div></div>
+                    </div>
+                </div>
+                <div class="testi-card">
+                    <div class="testi-quote">"</div>
+                    <div class="testi-stars">★★★★★</div>
+                    <p class="testi-text">Ordered cookies and banana bread for a family gathering. The thick cookies were perfectly gooey in the middle and the banana bread smelled incredible fresh. Everyone asked where I got them!</p>
+                    <div class="testi-author">
+                        <div class="testi-avatar" style="background:linear-gradient(135deg,#1A7A3A,#43E868);">AN</div>
+                        <div><div class="testi-name">Aisha N.</div><div class="testi-loc">Karen, Nairobi</div></div>
+                    </div>
+                </div>
+                <div class="testi-card">
+                    <div class="testi-quote">"</div>
+                    <div class="testi-stars">★★★★★</div>
+                    <p class="testi-text">We used Velvet Crumb for our team appreciation day — ordered a mixed package of cakesicles and cake pops. The presentation was beautiful and the team loved every flavour. Will use again for events!</p>
+                    <div class="testi-author">
+                        <div class="testi-avatar" style="background:linear-gradient(135deg,#7A6A1A,#E8C043);">DO</div>
+                        <div><div class="testi-name">David O.</div><div class="testi-loc">Lavington, Nairobi</div></div>
+                    </div>
+                </div>
+                <div class="testi-card">
+                    <div class="testi-quote">"</div>
+                    <div class="testi-stars">★★★★★</div>
+                    <p class="testi-text">The cupcakes were moist, perfectly frosted and tasted amazing. Ordered vanilla and caramel. Response on WhatsApp was super fast and delivery was on time. Such a smooth experience!</p>
+                    <div class="testi-author">
+                        <div class="testi-avatar" style="background:linear-gradient(135deg,#6A1A7A,#C043E8);">PS</div>
+                        <div><div class="testi-name">Priya S.</div><div class="testi-loc">Parklands, Nairobi</div></div>
+                    </div>
+                </div>
+                <div class="testi-card">
+                    <div class="testi-quote">"</div>
+                    <div class="testi-stars">★★★★★</div>
+                    <p class="testi-text">Genuinely the best treats I've had in Nairobi. The muffins had a perfect dome and weren't dry at all. Ordered blueberry and cookies &amp; cream. These are premium quality — worth every shilling.</p>
+                    <div class="testi-author">
+                        <div class="testi-avatar" style="background:linear-gradient(135deg,#7A3A1A,#E87043);">FW</div>
+                        <div><div class="testi-name">Faith W.</div><div class="testi-loc">Runda, Nairobi</div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="testi-cta">
+                <p>Loved your order? Share your experience — we'd love to hear from you!</p>
+                <a class="btn-wa" href="https://wa.me/254796809106?text=Hi%20Velvet%20Crumb!%20I%20wanted%20to%20share%20my%20feedback..." target="_blank" style="display:inline-flex;font-size:0.82rem;padding:0.75rem 1.8rem;">
+                    <svg viewBox="0 0 24 24" fill="white" style="width:18px;height:18px;flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    Send Us Your Feedback
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ GALLERY ══ -->
+    <div class="page" id="page-gallery">
+        <div class="gallery-wrap">
+            <div class="page-hd">
+                <span class="s-tag">Our Work</span>
+                <h2 class="s-title">Gallery</h2>
+                <div class="divider"></div>
+                <p class="s-sub">A look at what comes out of our kitchen — every treat handcrafted and made with love.</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="g-item"><img src="images/cake-pops.jpg" alt="Cake Pops"><div class="g-overlay"><span class="g-label">Cake Pops</span></div></div>
+                <div class="g-item"><img src="images/cakeslices.jpg" alt="Cake Slices"><div class="g-overlay"><span class="g-label">Cake Slices</span></div></div>
+                <div class="g-item"><img src="images/cakescicles.jpg" alt="Cakesicles"><div class="g-overlay"><span class="g-label">Cakesicles</span></div></div>
+                <div class="g-item"><img src="images/cookies.jpg" alt="Cookies"><div class="g-overlay"><span class="g-label">Artisan Cookies</span></div></div>
+                <div class="g-item"><img src="images/cupcakes.jpg" alt="Cupcakes"><div class="g-overlay"><span class="g-label">Cupcakes</span></div></div>
+                <div class="g-item"><img src="images/banana-bread.jpg" alt="Banana Bread"><div class="g-overlay"><span class="g-label">Banana Bread</span></div></div>
+                <div class="g-item"><img src="images/muffins.jpg" alt="Muffins"><div class="g-overlay"><span class="g-label">Muffins</span></div></div>
+            </div>
+            <div style="text-align:center;margin-top:2.5rem;">
+                <p style="font-size:0.82rem;color:rgba(242,217,200,0.4);margin-bottom:1rem;">Follow us on Instagram &amp; TikTok for more photos and behind-the-scenes content</p>
+                <button class="btn-share" onclick="showPage('follow')">📱 Follow Us for More</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ FAQ ══ -->
+    <div class="page" id="page-faq">
+        <div class="faq-wrap">
+            <div class="page-hd">
+                <span class="s-tag">Got Questions?</span>
+                <h2 class="s-title">Frequently Asked Questions</h2>
+                <div class="divider"></div>
+                <p class="s-sub">Everything you need to know before placing your order. Can't find your answer? Just ask us on WhatsApp!</p>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)"><span>Do you deliver? How far?</span><span class="faq-icon">+</span></div>
+                    <div class="faq-a"><p>Yes! We deliver within Nairobi. Delivery charges depend on your location and will be confirmed when you place your order. Message us on WhatsApp with your estate/area and we'll confirm availability and cost.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)"><span>How far in advance should I order?</span><span class="faq-icon">+</span></div>
+                    <div class="faq-a"><p>We bake on Thursdays, Fridays, and Saturdays. You should place your order the day before your chosen baking day. For large or custom orders (events, birthdays), we recommend giving us at least 3–5 days notice so we can plan ahead.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)"><span>What are the minimum order quantities?</span><span class="faq-icon">+</span></div>
+                    <div class="faq-a"><p>Minimum orders are: Cake Pops (6 pcs), Cakesicles (6 pcs), Artisan Cookies (6 pcs), Cupcakes (6 pcs), Muffins (6 pcs), Cake Slices (4 pcs), Banana Bread (1 loaf). These minimums ensure freshness and quality for every order.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)"><span>Can I choose my own flavours?</span><span class="faq-icon">+</span></div>
+                    <div class="faq-a"><p>Absolutely! We offer Vanilla, Orange, Cookies & Cream, Red Velvet, Biscoff, and Caramel — and we're open to other flavour requests too. Just let us know when ordering and we'll do our best to accommodate. Available flavours may vary week to week.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)"><span>What payment methods do you accept?</span><span class="faq-icon">+</span></div>
+                    <div class="faq-a"><p>We accept M-Pesa and cash on delivery. Payment details will be confirmed via WhatsApp when your order is ready. We typically require payment before or on delivery.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)"><span>Do you do custom or bulk orders for events?</span><span class="faq-icon">+</span></div>
+                    <div class="faq-a"><p>Yes! We love doing custom orders for birthdays, baby showers, corporate events, weddings, and more. We can customise colours, packaging, and flavours to match your theme. Reach out on WhatsApp with your event details and we'll create something special.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)"><span>Are there any allergens I should know about?</span><span class="faq-icon">+</span></div>
+                    <div class="faq-a"><p>All our treats contain gluten (wheat flour), dairy (butter, cream, milk), and eggs. Some products may contain nuts. Our kitchen is home-based and NOT allergen-free — cross-contamination is possible. Always mention any allergies when ordering so we can advise appropriately.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)"><span>How should I store my treats?</span><span class="faq-icon">+</span></div>
+                    <div class="faq-a"><p>🍭 Cake Pops &amp; Cakesicles: cool dry place or fridge, best within 5–7 days. 🍪 Cookies: airtight container at room temperature, best within 1 week. 🍌 Banana Bread: wrap well, room temp 3–4 days or fridge up to 1 week. 🧁 Cupcakes &amp; Muffins: airtight container, best within 3–4 days. 🎂 Cake Slices: refrigerate, enjoy within 3–4 days.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)"><span>Can I pick up instead of getting delivery?</span><span class="faq-icon">+</span></div>
+                    <div class="faq-a"><p>Yes! Collection is available and saves you the delivery charge. Once your order is confirmed, we'll share our location and arrange a convenient pickup time. Message us on WhatsApp to arrange this.</p></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q" onclick="toggleFaq(this)"><span>How do I place an order?</span><span class="faq-icon">+</span></div>
+                    <div class="faq-a"><p>The easiest way is to use our "Build a Package" tool on this website, then tap "Send Order on WhatsApp" — your full order drops straight into a chat with us. Or you can go to "Order Now" and message us directly. We usually reply within a few hours!</p></div>
+                </div>
+            </div>
+            <div style="margin-top:2.5rem;text-align:center;">
+                <p style="font-size:0.85rem;color:rgba(242,217,200,0.45);margin-bottom:1rem;">Still have a question? We're happy to help!</p>
+                <a class="btn-wa" href="https://wa.me/254796809106?text=Hi%20Velvet%20Crumb!%20I%20have%20a%20question..." target="_blank" style="display:inline-flex;font-size:0.82rem;padding:0.75rem 1.8rem;">
+                    <svg viewBox="0 0 24 24" fill="white" style="width:18px;height:18px;flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    Ask Us on WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ SEASONAL SPECIALS ══ -->
+    <div class="page" id="page-seasonal">
+        <div class="seasonal-wrap">
+            <div class="seasonal-hero">
+                <div class="badge">Limited Time</div>
+                <h2>Seasonal &amp; <em>Special</em> Treats</h2>
+                <p>We create exclusive treats for holidays, celebrations, and special occasions throughout the year. Watch this space — and follow our socials to be first to know!</p>
+                <button class="btn-cd-preorder" onclick="showPage('follow')">Follow Us for Updates</button>
+            </div>
+            <div class="page-hd" style="margin-bottom:2rem;">
+                <span class="s-tag">Coming Up</span>
+                <h2 class="s-title">Upcoming Specials</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="specials-grid">
+                <div class="special-card">
+                    <div class="special-icon">💐</div>
+                    <div class="special-name">Mother's Day Box</div>
+                    <p class="special-desc">A beautifully curated gift box of cake pops, cakesicles, and cookies in pastel colours — perfect for the special mum in your life.</p>
+                    <div class="special-tag">May · Limited Edition</div>
+                </div>
+                <div class="special-card">
+                    <div class="special-icon">🎓</div>
+                    <div class="special-name">Graduation Treats</div>
+                    <p class="special-desc">Custom decorated cake pops and cakesicles in your school colours to celebrate your achievement. Personalisation available!</p>
+                    <div class="special-tag">June – July · Custom Orders</div>
+                </div>
+                <div class="special-card">
+                    <div class="special-icon">💘</div>
+                    <div class="special-name">Valentine's Collection</div>
+                    <p class="special-desc">Heart-shaped cakesicles, red velvet cake pops, and strawberry cookies in romantic red and pink. Pre-order early — they sell out fast!</p>
+                    <div class="special-tag">February · Pre-Order Required</div>
+                </div>
+                <div class="special-card">
+                    <div class="special-icon">🎄</div>
+                    <div class="special-name">Christmas Festive Box</div>
+                    <p class="special-desc">Festive-themed treats in Christmas colours — green, red, and gold. A perfect holiday gift for friends, family, or the office.</p>
+                    <div class="special-tag">December · Limited Quantities</div>
+                </div>
+                <div class="special-card">
+                    <div class="special-icon">🌙</div>
+                    <div class="special-name">Ramadan &amp; Eid Specials</div>
+                    <p class="special-desc">Special treats to celebrate the season — available in elegant gold and white packaging, ideal for gifting to family and guests.</p>
+                    <div class="special-tag">Seasonal · Pre-Order Required</div>
+                </div>
+                <div class="special-card">
+                    <div class="special-icon">🎂</div>
+                    <div class="special-name">Custom Birthday Box</div>
+                    <p class="special-desc">Year-round! Personalised treat boxes for birthdays with custom colours, flavours, and themes. Make someone's day truly special.</p>
+                    <div class="special-tag">Year-Round · 5 Days Notice</div>
+                </div>
+            </div>
+            <div style="text-align:center;margin-top:3rem;">
+                <p style="font-size:0.85rem;color:rgba(242,217,200,0.45);margin-bottom:1.2rem;">Interested in a seasonal or custom order?</p>
+                <a class="btn-wa" href="https://wa.me/254796809106?text=Hi%20Velvet%20Crumb!%20I'm%20interested%20in%20a%20custom%20or%20seasonal%20order.%20Can%20we%20chat?" target="_blank" style="display:inline-flex;font-size:0.82rem;padding:0.75rem 1.8rem;">
+                    <svg viewBox="0 0 24 24" fill="white" style="width:18px;height:18px;flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    Enquire on WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══ PACKAGE BUILDER ══ -->
+    <div class="page" id="page-package">
+        <div class="pkg-wrap">
+            <div>
+                <div class="page-hd">
+                    <span class="s-tag">Mix &amp; Match</span>
+                    <h2 class="s-title">Build Your Custom Package</h2>
+                    <div class="divider"></div>
+                    <p class="s-sub">Pick your favourite treats, set the quantities, and we'll put together your custom order. When you're ready, hit the WhatsApp button — your full order drops straight into the chat.</p>
+                </div>
+                <div class="pkg-items-grid" id="pkgItemsGrid"></div>
+            </div>
+            <div class="pkg-summary">
+                <div class="pkg-summary-title">Your Package</div>
+                <div class="divider"></div>
+                <div class="pkg-empty" id="pkgEmpty">No items added yet.<br>Pick your favourites from the left!</div>
+                <ul class="pkg-lines" id="pkgLines"></ul>
+                <div class="pkg-total-row" id="pkgTotalRow" style="display:none;">
+                    <span class="pkg-total-label">Total</span>
+                    <span class="pkg-total-amt" id="pkgTotal">KES 0</span>
+                </div>
+                <button class="btn-pkg-order" id="btnPkgOrder" disabled onclick="orderPackage()">
+                    <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    Send Order on WhatsApp
+                </button>
+                <button class="btn-pkg-clear" onclick="clearPackage()">Clear Package</button>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<!-- ══ CHATBOT ══ -->
+<button class="chat-fab" id="chatFab" onclick="toggleChat()" title="Ask us anything!">
+    🍪
+    <span class="badge-dot" id="chatDot"></span>
+</button>
+
+<div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+        <div class="chat-avatar">🍭</div>
+        <div class="chat-hd-info">
+            <div class="chat-hd-name">Velvet Crumb Bot</div>
+            <div class="chat-hd-status">● Online — ask me anything!</div>
+        </div>
+        <button class="chat-close" onclick="toggleChat()">✕</button>
+    </div>
+    <div class="chat-msgs" id="chatMsgs"></div>
+    <div class="quick-replies" id="quickReplies"></div>
+    <div class="chat-input-row">
+        <input class="chat-input" id="chatInput" type="text" placeholder="Ask about treats, ingredients, orders…" onkeydown="if(event.key==='Enter')sendMsg()">
+        <button class="chat-send" onclick="sendMsg()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+                <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+        </button>
+    </div>
+</div>
+
+<script>
+// ── INDIVIDUAL ITEM ORDER ──
+function orderItem(name, priceLabel, min) {
+    const minNote = min ? ' (min. order: ' + min + ')' : '';
+    const msg = 'Hi Velvet Crumb! I\'d like to order: ' + name + ' — ' + priceLabel + minNote + '.\n\nPlease let me know availability, my preferred flavour, and delivery details. Thank you!';
+    window.open('https://wa.me/254796809106?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// ── PACKAGE BUILDER DATA ──
+const FLAVOURS = ['Vanilla','Orange','Cookies & Cream','Red Velvet','Biscoff','Caramel'];
+
+const PRODUCTS = [
+    {id:'cake-pops',    name:'Cake Pops',        price:150, unit:'each',      min:6, img:'images/cake-pops.jpg',    bg:'ci1'},
+    {id:'cakesicles',   name:'Cakesicles',        price:250, unit:'each',      min:6, img:'images/cakescicles.jpg',  bg:'ci2'},
+    {id:'cookies',      name:'Artisan Cookies',   price:100, unit:'each',      min:6, img:'images/cookies.jpg',      bg:'ci3'},
+    {id:'banana-bread', name:'Banana Bread',      price:600, unit:'per loaf',  min:1, img:'images/banana-bread.jpg', bg:'ci4'},
+    {id:'cake-slices',  name:'Cake Slices',       price:300, unit:'per slice', min:4, img:'images/cakeslices.jpg',   bg:'ci5'},
+    {id:'cupcakes',     name:'Cupcakes',          price:180, unit:'each',      min:6, img:'images/cupcakes.jpg',     bg:'ci6'},
+    {id:'muffins',      name:'Muffins',           price:130, unit:'each',      min:6, img:'images/muffins.jpg',      bg:''},
+];
+
+let pkgCart = {};
+
+// Pull prices saved in admin panel into the menu cards and PRODUCTS array
+function syncPricesFromAdmin() {
+    try {
+        const raw = localStorage.getItem('vc_admin');
+        if (!raw) return;
+        const adminData = JSON.parse(raw);
+        if (!adminData.products) return;
+        adminData.products.forEach(ap => {
+            // Update PRODUCTS array
+            const p = PRODUCTS.find(x => x.id === ap.id);
+            if (p) p.price = ap.price;
+            // Update menu card display
+            const priceEl = document.getElementById('menu-price-' + ap.id);
+            const btnEl   = document.getElementById('menu-btn-' + ap.id);
+            if (!priceEl || !btnEl) return;
+            const label = 'KES ' + ap.price.toLocaleString() + ' <span>' + ap.unit + '</span>';
+            priceEl.innerHTML = label;
+            // Rebuild the orderItem call with updated price
+            const minMap = {
+                'cake-pops':'6 pcs','cakesicles':'6 pcs','cookies':'6 pcs',
+                'banana-bread':'1 loaf','cake-slices':'4 slices','cupcakes':'6 pcs','muffins':'6 pcs'
+            };
+            const priceLabel = 'KES ' + ap.price.toLocaleString() + ' ' + ap.unit;
+            btnEl.setAttribute('onclick',
+                `orderItem('${ap.name}','${priceLabel}','${minMap[ap.id] || '6 pcs'}')`
+            );
+        });
+    } catch(e) {}
+}
+
+function renderPkgItems() {
+    const grid = document.getElementById('pkgItemsGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    PRODUCTS.forEach(p => {
+        const entry = pkgCart[p.id];
+        const qty   = entry ? entry.qty : 0;
+        const selFl = entry ? entry.flavours : [];
+        const other = entry ? entry.otherFlavour : '';
+
+        const pillsHtml = FLAVOURS.map(f =>
+            '<button class="flavour-pill' + (selFl.includes(f) ? ' active' : '') +
+            '" onclick="toggleFlavour(\'' + p.id + '\',\'' + f.replace(/'/g,"\\'") + '\')">' + f + '</button>'
+        ).join('');
+
+        const div = document.createElement('div');
+        div.className = 'pkg-item';
+        div.id = 'pi-' + p.id;
+        div.innerHTML =
+            '<div class="pkg-item-img ' + p.bg + '">' +
+                '<img src="' + p.img + '" alt="' + p.name + '">' +
+            '</div>' +
+            '<div class="pkg-item-body">' +
+                '<div class="pkg-item-name">' + p.name + '</div>' +
+                '<div class="pkg-item-price">KES ' + p.price.toLocaleString() + ' <span style="font-size:0.65rem;font-family:Raleway,sans-serif;font-weight:400;color:rgba(242,217,200,0.4);">' + p.unit + '</span></div>' +
+                '<div class="pkg-min-note">Minimum order: ' + p.min + (p.min === 1 ? ' ' : ' × ') + p.unit + '</div>' +
+                '<div class="pkg-qty-row">' +
+                    '<button class="qty-btn" onclick="pkgQty(\'' + p.id + '\',-1)">−</button>' +
+                    '<span class="qty-display" id="qty-' + p.id + '">' + qty + '</span>' +
+                    '<button class="qty-btn" onclick="pkgQty(\'' + p.id + '\',1)">+</button>' +
+                    '<button class="btn-add-pkg' + (qty > 0 ? ' added' : '') + '" id="addbtn-' + p.id + '" onclick="pkgQty(\'' + p.id + '\',1)">' + (qty > 0 ? 'Added ✓' : '+ Add') + '</button>' +
+                '</div>' +
+                '<div class="pkg-flavours" id="flv-' + p.id + '" style="display:' + (qty > 0 ? 'block' : 'none') + '">' +
+                    '<div class="pkg-flavour-label">Select Flavour(s)</div>' +
+                    '<div class="pkg-flavour-pills">' + pillsHtml + '</div>' +
+                    '<input class="flavour-other-input" id="flv-other-' + p.id + '" placeholder="Other flavour (e.g. Mango, Strawberry…)" value="' + other.replace(/"/g,'&quot;') + '" oninput="updateOtherFlavour(\'' + p.id + '\',this.value)">' +
+                '</div>' +
+            '</div>';
+        grid.appendChild(div);
+    });
+}
+
+function pkgQty(id, delta) {
+    const p = PRODUCTS.find(x => x.id === id);
+    if (!pkgCart[id]) {
+        if (delta <= 0) return;
+        pkgCart[id] = {id, qty:p.min, name:p.name, price:p.price, unit:p.unit, min:p.min, flavours:[], otherFlavour:''};
+    } else {
+        const next = pkgCart[id].qty + delta;
+        if (next < p.min) { delete pkgCart[id]; }
+        else { pkgCart[id].qty = next; }
+    }
+    const qty = pkgCart[id] ? pkgCart[id].qty : 0;
+    const qtyEl = document.getElementById('qty-' + id);
+    if (qtyEl) qtyEl.textContent = qty;
+    const btn = document.getElementById('addbtn-' + id);
+    if (btn) { btn.textContent = qty > 0 ? 'Added ✓' : '+ Add'; btn.classList.toggle('added', qty > 0); }
+    const flvEl = document.getElementById('flv-' + id);
+    if (flvEl) flvEl.style.display = qty > 0 ? 'block' : 'none';
+    renderPkgSummary();
+}
+
+function toggleFlavour(id, flavour) {
+    if (!pkgCart[id]) return;
+    const idx = pkgCart[id].flavours.indexOf(flavour);
+    if (idx === -1) pkgCart[id].flavours.push(flavour);
+    else pkgCart[id].flavours.splice(idx, 1);
+    const pill = document.querySelector('#pi-' + id + ' .pkg-flavour-pills .flavour-pill:nth-child(' + (FLAVOURS.indexOf(flavour)+1) + ')');
+    if (pill) pill.classList.toggle('active', pkgCart[id].flavours.includes(flavour));
+    renderPkgSummary();
+}
+
+function updateOtherFlavour(id, val) {
+    if (pkgCart[id]) pkgCart[id].otherFlavour = val;
+    renderPkgSummary();
+}
+
+function renderPkgSummary() {
+    const lines    = document.getElementById('pkgLines');
+    const empty    = document.getElementById('pkgEmpty');
+    const totalRow = document.getElementById('pkgTotalRow');
+    const totalAmt = document.getElementById('pkgTotal');
+    const orderBtn = document.getElementById('btnPkgOrder');
+    const items    = Object.values(pkgCart).filter(x => x.qty > 0);
+    if (!lines) return;
+    if (items.length === 0) {
+        empty.style.display = 'block'; lines.innerHTML = '';
+        totalRow.style.display = 'none'; orderBtn.disabled = true; return;
+    }
+    empty.style.display = 'none'; totalRow.style.display = 'flex'; orderBtn.disabled = false;
+    let total = 0;
+    lines.innerHTML = '';
+    items.forEach(item => {
+        const sub = item.price * item.qty;
+        total += sub;
+        const allFl = [...item.flavours, ...(item.otherFlavour.trim() ? [item.otherFlavour.trim()] : [])];
+        const flStr = allFl.length ? allFl.join(', ') : '';
+        const li = document.createElement('li');
+        li.className = 'pkg-line';
+        li.innerHTML =
+            '<div class="pkg-line-info">' +
+                '<div class="pkg-line-name">' + item.name + '</div>' +
+                (flStr ? '<div class="pkg-line-flavours">' + flStr + '</div>' : '') +
+            '</div>' +
+            '<span class="pkg-line-qty">×' + item.qty + '</span>' +
+            '<span class="pkg-line-price">KES ' + sub.toLocaleString() + '</span>' +
+            '<button class="pkg-line-rm" onclick="removePkgItem(\'' + item.id + '\')" title="Remove">✕</button>';
+        lines.appendChild(li);
+    });
+    totalAmt.textContent = 'KES ' + total.toLocaleString();
+}
+
+function removePkgItem(id) {
+    delete pkgCart[id];
+    renderPkgItems();
+    renderPkgSummary();
+}
+
+function clearPackage() {
+    pkgCart = {};
+    renderPkgItems();
+    renderPkgSummary();
+}
+
+function orderPackage() {
+    const items = Object.values(pkgCart).filter(x => x.qty > 0);
+    if (!items.length) return;
+    let total = 0, lines = '';
+    items.forEach(item => {
+        const sub = item.price * item.qty;
+        total += sub;
+        const allFl = [...item.flavours, ...(item.otherFlavour.trim() ? [item.otherFlavour.trim()] : [])];
+        const flStr = allFl.length ? '\n   Flavours: ' + allFl.join(', ') : '';
+        lines += '• ' + item.qty + 'x ' + item.name + ' — KES ' + sub.toLocaleString() + flStr + '\n';
+    });
+    const msg = 'Hi Velvet Crumb! I\'d like to place a custom package order:\n\n' + lines + '\nPackage Total: KES ' + total.toLocaleString() + '\n\nPlease confirm availability and delivery details. Thank you! 🎉';
+    window.open('https://wa.me/254796809106?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// ── PAGE NAVIGATION ──
+function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    document.querySelector('[data-page="' + id + '"]').classList.add('active');
+    document.getElementById('main').scrollTop = 0;
+    window.scrollTo(0,0);
+    closeSidebar();
+}
+
+// ── SIDEBAR MOBILE ──
+function openSidebar() {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('overlay').classList.add('show');
+}
+function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('show');
+}
+
+// ── CHATBOT ──
+const KB = [
+    {k:['hello','hi','hey','morning','afternoon','evening','howdy'],
+     r:'Hi there! Welcome to Velvet Crumb 🍭\nI\'m here to answer any questions about our treats, ingredients, ordering, delivery, and more! What can I help you with today?',
+     q:['View our menu','How to order','Ingredients','Sales days']},
+
+    {k:['menu','what do you sell','what do you have','treats','products','offerings'],
+     r:'We currently make:\n🍭 Cake Pops\n🍫 Cakesicles\n🍪 Artisan Cookies (thin & thick)\n🍌 Banana Bread\n🎂 Cake Slices\n🧁 Cupcakes\n🫐 Muffins\n\nClick "Our Menu" in the sidebar to see everything!',
+     q:['Cake pop ingredients','Cookie ingredients','How to order','Sales days']},
+
+    {k:['cake pop','cakepop'],
+     r:'🍭 Cake Pops\n\nMade from: moist cake crumbs mixed with frosting, shaped into balls, skewered on a stick, then coated in chocolate or candy melts and hand-decorated.\n\nCommon flavours: vanilla, chocolate, red velvet, lemon.\n\n⚠️ Allergens: gluten (wheat flour), dairy (butter, cream), eggs.',
+     q:['Cakesicle ingredients','Cookie ingredients','How to order','Custom orders']},
+
+    {k:['cakesicle','cakesicles'],
+     r:'🍫 Cakesicles\n\nThink of it as an upgraded cake pop — shaped like a popsicle, filled with moist cake and frosting inside a thick chocolate shell. They\'re beautifully decorated and hold much more filling than a cake pop.\n\n⚠️ Allergens: gluten, dairy, eggs.',
+     q:['Cake pop ingredients','Cookie ingredients','How to order','Custom orders']},
+
+    {k:['cookie','cookies'],
+     r:'🍪 Artisan Cookies\n\nTwo styles available:\n• Thin & Crispy — light, snappy texture, baked golden\n• Thick & Chewy — soft gooey centre, crispy edges\n\nFlavours include: chocolate chip, vanilla, lemon, and more seasonal options.\n\n⚠️ Allergens: gluten, dairy, eggs. Some varieties may contain nuts — always confirm when ordering.',
+     q:['Banana bread ingredients','How to order','Allergens info','Sales days']},
+
+    {k:['banana bread','banana'],
+     r:'🍌 Banana Bread\n\nMade with: very ripe bananas, butter, sugar, eggs, plain flour, baking soda, cinnamon, nutmeg, and a pinch of salt.\n\nThe result is a moist, dense loaf packed with natural banana flavour and warm spice.\n\n⚠️ Allergens: gluten, dairy, eggs.',
+     q:['Cake slice info','How to order','Storage tips','Sales days']},
+
+    {k:['cake slice','cake slices','slice'],
+     r:'🎂 Cake Slices\n\nGenerously cut slices from beautifully layered cakes with rich frosting. Available on our sales days — flavours rotate each week!\n\nFollow our socials or ask us on WhatsApp for this week\'s available cake flavours.\n\n⚠️ Allergens: gluten, dairy, eggs.',
+     q:['What are sales days','How to order','Follow us','Allergens info']},
+
+    {k:['ingredient','ingredients','made of','made from','what\'s in','whats in','contains'],
+     r:'Which treat would you like to know the ingredients for?\n\nAsk me about:\n🍭 Cake Pops\n🍫 Cakesicles\n🍪 Cookies\n🍌 Banana Bread\n🎂 Cake Slices',
+     q:['Cake pop ingredients','Cookie ingredients','Banana bread','Allergens info']},
+
+    {k:['allergen','allergy','allergic','gluten','dairy','nut','nuts','egg','eggs','intolerance'],
+     r:'⚠️ Allergen Information\n\nAll our treats are made in a home kitchen and contain:\n• Gluten (wheat flour)\n• Dairy (butter, milk, cream)\n• Eggs\n\nSome products may contain nuts. Our kitchen is NOT allergen-free — cross-contamination is possible.\n\nAlways mention any allergies when placing your order so we can advise you.',
+     q:['Vegan options','Gluten free options','How to order','Cake pop ingredients']},
+
+    {k:['vegan','plant based','plant-based','no dairy','no egg'],
+     r:'Currently our standard products contain gluten, dairy, and eggs. We don\'t have vegan options at this time.\n\nHowever, feel free to ask us on WhatsApp — we may be able to accommodate certain requests depending on the treat and occasion. 💬',
+     q:['Gluten free options','Allergens info','How to order']},
+
+    {k:['gluten free','gluten-free','wheat free','coeliac','celiac'],
+     r:'We don\'t currently offer gluten-free options in our standard range, as all treats are made with wheat flour in a shared kitchen.\n\nIf you have a specific need, message us on WhatsApp and we\'ll see what we can do! 💬',
+     q:['Vegan options','Allergens info','How to order']},
+
+    {k:['price','how much','cost','pricing','ksh','kes','charge','expensive','cheap','affordable'],
+     r:'💰 Pricing\n\nPrices vary by treat, quantity, and customisation level. We\'ll send you a full price list when you reach out!\n\nTap "Order Now" in the sidebar or message us on WhatsApp to get current pricing. 📱',
+     q:['How to order','Sales days','Custom orders']},
+
+    {k:['order','how to order','buy','purchase','get','want'],
+     r:'🛒 How to Order\n\nOrdering is easy and personal!\n\n1. Tap "Order Now" in the sidebar\n2. Hit the WhatsApp button\n3. Tell us what you\'d like & quantity\n4. We confirm availability & pricing\n5. Pay & receive your treats! 🎉\n\nWe usually reply within a few hours.',
+     q:['Pre-order info','Sales days','Pricing','Delivery info']},
+
+    {k:['delivery','deliver','shipping','ship','drop off','bring'],
+     r:'🚚 Delivery\n\nWe deliver within Nairobi! Delivery charges depend on your location and will be confirmed when you place your order.\n\nMessage us on WhatsApp with your area and we\'ll confirm if we can reach you and the delivery cost.',
+     q:['Pickup option','How to order','Sales days','Pricing']},
+
+    {k:['pickup','pick up','collect','collection','self collect'],
+     r:'📦 Pickup / Collection\n\nYes, collection is available! Message us on WhatsApp to arrange a convenient time and we\'ll share our location.\n\nPickup is a great way to save on delivery charges.',
+     q:['Delivery info','How to order','Sales days']},
+
+    {k:['sales day','sales days','when','baking day','baking days','available','open'],
+     r:'📅 Sales Days\n\nWe currently bake on:\n• Thursday (order by Wednesday)\n• Friday (order by Thursday)\n• Saturday (order by Friday)\n\nSales days may vary, so always confirm with us on WhatsApp before placing your order. Click "Pre-Order" in the sidebar for more info!',
+     q:['How to pre-order','How to order','Pricing']},
+
+    {k:['preorder','pre-order','pre order','advance order','book','booking'],
+     r:'📦 Pre-Ordering\n\n1. Check this week\'s sales days\n2. Message us on WhatsApp the day before\n3. Tell us what you want and how many\n4. We confirm and you\'re booked in!\n\nWe have limited quantities per baking day, so early pre-orders are recommended. 🎉',
+     q:['Sales days','How to order','Pricing','Delivery info']},
+
+    {k:['minimum','minimum order','min order'],
+     r:'We do have minimum order quantities for some treats.\n\nThe minimums depend on the treat type and whether it\'s a standard or custom order. Message us on WhatsApp and we\'ll give you the details! 💬',
+     q:['How to order','Pricing','Custom orders']},
+
+    {k:['custom','customise','customize','personalise','personalize','special order','theme','birthday','event','wedding','corporate'],
+     r:'🎨 Custom Orders\n\nYes, we love custom orders! We can personalise treats for:\n• Birthdays 🎂\n• Events & parties 🎉\n• Corporate gifts 💼\n• Weddings & special occasions 💍\n\nTell us your theme, colours, and occasion. Reach out on WhatsApp with your ideas and we\'ll create something magical!',
+     q:['How to order','Pricing','Sales days']},
+
+    {k:['storage','store','keep','shelf life','how long','last','expire','refrigerate','fridge'],
+     r:'🗄️ Storage Tips\n\n🍭 Cake Pops & Cakesicles: store in a cool dry place or fridge. Best within 5–7 days.\n\n🍪 Cookies: airtight container at room temp. Best within 1 week.\n\n🍌 Banana Bread: wrap well, room temp 3–4 days, or fridge up to 1 week.\n\n🎂 Cake Slices: refrigerate and enjoy within 3–4 days.',
+     q:['Allergens info','How to order','Sales days']},
+
+    {k:['flavour','flavor','flavors','flavours','variety','choice','options','varieties'],
+     r:'🍫🍋 Flavours\n\nWe offer a rotating selection including:\nVanilla · Chocolate · Red Velvet · Lemon · and seasonal specials!\n\nAvailable flavours change each week. Follow our socials or ask us on WhatsApp for this week\'s lineup. 📱',
+     q:['Cake pop ingredients','Cookie ingredients','Sales days','How to order']},
+
+    {k:['location','where','nairobi','area','based','address'],
+     r:'📍 Location\n\nWe\'re a home-based bakery in Nairobi, Kenya. We deliver within Nairobi and can arrange collection.\n\nMessage us on WhatsApp with your area/estate and we\'ll confirm delivery availability and cost!',
+     q:['Delivery info','Pickup option','How to order']},
+
+    {k:['contact','reach','phone','number','whatsapp','call'],
+     r:'📱 Contact Us\n\nThe fastest way to reach us is WhatsApp:\n+254 796 809 106\n\nWe\'re also on Instagram, TikTok, and Facebook. Click "Follow Us" in the sidebar to find all our handles.',
+     q:['How to order','Follow us on socials']},
+
+    {k:['instagram','tiktok','facebook','social','follow','social media'],
+     r:'📱 Social Media\n\nFollow us for treats content, new flavours, behind-the-scenes, and sales day announcements!\n\nClick "Follow Us" in the sidebar to see all our social media handles and links.',
+     q:['How to order','Sales days']},
+
+    {k:['thank','thanks','thank you','appreciate','great','awesome','perfect','wonderful'],
+     r:'You\'re so welcome! 🥰 Is there anything else I can help you with?\n\nFeel free to ask me about our treats, ingredients, ordering, or anything else — or tap "Order Now" to place an order! 🍭',
+     q:['View menu','How to order','Sales days']},
+
+    {k:['bye','goodbye','see you','later','ciao','tata'],
+     r:'Goodbye! 👋 Come back anytime you\'re craving something sweet from Velvet Crumb 🍭\n\nDon\'t forget to follow us on socials for all the latest treats and sales day updates!',
+     q:['Follow us on socials']},
+];
+
+const FALLBACK = 'Hmm, I\'m not sure about that one! 🤔\n\nYou can ask me about:\n• Our menu & treats\n• Ingredients & allergens\n• How to order\n• Delivery & pickup\n• Sales days & pre-ordering\n• Custom orders & pricing\n\nOr message us directly on WhatsApp for anything else! 💬';
+const FALLBACK_Q = ['View our menu','How to order','Sales days','Allergens info'];
+
+let chatOpen = false;
+let welcomed = false;
+
+function toggleChat() {
+    chatOpen = !chatOpen;
+    document.getElementById('chatWindow').classList.toggle('open', chatOpen);
+    document.getElementById('chatDot').style.display = chatOpen ? 'none' : '';
+    if (chatOpen && !welcomed) {
+        welcomed = true;
+        setTimeout(() => {
+            addMsg('bot', 'Hi! 👋 I\'m the Velvet Crumb assistant.\n\nI can answer questions about our treats, ingredients, allergens, how to order, delivery, and much more. What would you like to know?');
+            showQuickReplies(['View our menu','Cake pop ingredients','How to order','Sales days','Allergens info']);
+        }, 400);
+    }
+    if (chatOpen) setTimeout(() => document.getElementById('chatInput').focus(), 300);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    syncPricesFromAdmin();
+    renderPkgItems();
+    startCountdown();
+    if (sessionStorage.getItem('vc_banner_dismissed')) {
+        const b = document.getElementById('announceBar');
+        if (b) b.style.display = 'none';
+    }
+});
+
+// ── ANNOUNCEMENT BANNER ──
+function dismissBanner() {
+    const b = document.getElementById('announceBar');
+    if (b) b.style.display = 'none';
+    sessionStorage.setItem('vc_banner_dismissed','1');
+}
+
+// ── COUNTDOWN TIMER ──
+function startCountdown() {
+    const BAKING = [4,5,6]; // Thu, Fri, Sat
+    const NAMES  = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    function tick() {
+        const now = new Date();
+        let target = null, targetDay = null;
+        for (let offset = 0; offset <= 7; offset++) {
+            const d = new Date(now);
+            d.setDate(d.getDate() + offset);
+            d.setHours(0,0,0,0);
+            if (BAKING.includes(d.getDay()) && (offset > 0 || d > now)) {
+                target = d; targetDay = d.getDay(); break;
+            }
+        }
+        if (!target) return;
+        const dayEl = document.getElementById('cd-day');
+        if (dayEl) dayEl.textContent = NAMES[targetDay];
+        const diff = Math.max(0, target - now);
+        const pad  = n => String(Math.floor(n)).padStart(2,'0');
+        const vals = {
+            'd': pad(diff / 86400000),
+            'h': pad((diff % 86400000) / 3600000),
+            'm': pad((diff % 3600000) / 60000),
+            's': pad((diff % 60000) / 1000)
+        };
+        Object.entries(vals).forEach(([k,v]) => {
+            const el = document.getElementById('cd-'+k);
+            if (el) el.textContent = v;
+        });
+    }
+    tick();
+    setInterval(tick, 1000);
+}
+
+// ── FAQ ACCORDION ──
+function toggleFaq(btn) {
+    const isOpen = btn.classList.contains('open');
+    document.querySelectorAll('.faq-q.open').forEach(q => {
+        q.classList.remove('open');
+        q.nextElementSibling.classList.remove('open');
+    });
+    if (!isOpen) {
+        btn.classList.add('open');
+        btn.nextElementSibling.classList.add('open');
+    }
+}
+
+// ── SHARE ──
+function shareVelvetCrumb() {
+    const text = 'Check out Velvet Crumb — premium artisan treats in Nairobi! Cake pops, cakesicles, cookies, cupcakes & more. Order via WhatsApp 🍭';
+    if (navigator.share) {
+        navigator.share({title:'Velvet Crumb', text});
+    } else {
+        window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+    }
+}
+
+function addMsg(who, text) {
+    const msgs = document.getElementById('chatMsgs');
+    const el = document.createElement('div');
+    el.className = 'msg ' + who;
+    el.textContent = text;
+    msgs.appendChild(el);
+    msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showTyping() {
+    const msgs = document.getElementById('chatMsgs');
+    const el = document.createElement('div');
+    el.className = 'typing'; el.id = 'typing';
+    el.innerHTML = '<span></span><span></span><span></span>';
+    msgs.appendChild(el);
+    msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeTyping() {
+    const t = document.getElementById('typing');
+    if (t) t.remove();
+}
+
+function showQuickReplies(qs) {
+    const el = document.getElementById('quickReplies');
+    el.innerHTML = '';
+    (qs || []).forEach(q => {
+        const btn = document.createElement('button');
+        btn.className = 'qr'; btn.textContent = q;
+        btn.onclick = () => handleInput(q);
+        el.appendChild(btn);
+    });
+}
+
+function sendMsg() {
+    const input = document.getElementById('chatInput');
+    const val = input.value.trim();
+    if (!val) return;
+    input.value = '';
+    handleInput(val);
+}
+
+function handleInput(text) {
+    addMsg('user', text);
+    document.getElementById('quickReplies').innerHTML = '';
+    showTyping();
+    setTimeout(() => {
+        removeTyping();
+        const lower = text.toLowerCase();
+        let matched = null;
+        for (const entry of KB) {
+            if (entry.k.some(kw => lower.includes(kw))) {
+                matched = entry; break;
+            }
+        }
+        if (matched) {
+            addMsg('bot', matched.r);
+            showQuickReplies(matched.q);
+        } else {
+            addMsg('bot', FALLBACK);
+            showQuickReplies(FALLBACK_Q);
+        }
+    }, 900 + Math.random() * 400);
+}
+</script>
+</body>
+</html>

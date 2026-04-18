@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Velvet Crumb — Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+    --dark:#0F0408;--dark2:#1A060E;--dark3:#240A18;
+    --gold:#C9A84C;--gold-lt:#E0BF6A;--cream:#FFF2F6;
+    --blush:#FF4B82;--green:#25D366;--red:#E03050;
+    --sb-w:220px;
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--dark);color:var(--cream);min-height:100vh;}
+
+/* ── GATE ── */
+#gate{
+    min-height:100vh;display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(ellipse at top,rgba(122,26,58,0.8) 0%,transparent 60%),var(--dark);
+}
+.gate-box{
+    background:var(--dark2);border:1px solid rgba(201,168,76,0.2);
+    border-radius:16px;padding:3rem 2.5rem;text-align:center;width:340px;
+}
+.gate-logo{font-size:1.8rem;font-weight:700;color:var(--gold);letter-spacing:2px;margin-bottom:0.25rem;}
+.gate-logo span{color:var(--blush);}
+.gate-sub{font-size:0.68rem;letter-spacing:4px;text-transform:uppercase;color:rgba(242,217,200,0.35);margin-bottom:2rem;}
+.gate-box input{
+    width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(201,168,76,0.2);
+    color:var(--cream);border-radius:8px;padding:0.75rem 1rem;font-size:0.9rem;
+    outline:none;margin-bottom:1rem;text-align:center;letter-spacing:3px;
+}
+.gate-box input:focus{border-color:rgba(201,168,76,0.5);}
+.gate-box button{
+    width:100%;background:var(--gold);color:var(--dark);border:none;border-radius:8px;
+    padding:0.75rem;font-size:0.85rem;font-weight:700;letter-spacing:2px;
+    text-transform:uppercase;cursor:pointer;transition:all 0.2s;
+}
+.gate-box button:hover{background:var(--gold-lt);}
+.gate-err{color:var(--blush);font-size:0.78rem;margin-top:0.75rem;min-height:1.2rem;}
+
+/* ── ADMIN LAYOUT ── */
+#adminPanel{display:flex;min-height:100vh;}
+.admin-sb{
+    width:var(--sb-w);background:var(--dark2);
+    border-right:1px solid rgba(201,168,76,0.1);
+    position:fixed;top:0;left:0;bottom:0;
+    display:flex;flex-direction:column;z-index:100;
+}
+.admin-sb-top{padding:1.5rem 1.2rem;border-bottom:1px solid rgba(201,168,76,0.1);}
+.admin-logo{font-size:1.1rem;font-weight:700;color:var(--gold);letter-spacing:1px;}
+.admin-logo span{color:var(--blush);}
+.admin-tagline{font-size:0.58rem;letter-spacing:3px;text-transform:uppercase;color:rgba(242,217,200,0.25);margin-top:0.2rem;}
+.admin-nav{flex:1;padding:1rem 0;overflow-y:auto;}
+.atab{
+    display:flex;align-items:center;gap:0.7rem;width:100%;
+    padding:0.8rem 1.2rem;background:none;border:none;
+    color:rgba(242,217,200,0.55);font-size:0.8rem;font-weight:500;
+    cursor:pointer;border-left:3px solid transparent;
+    transition:all 0.2s;text-align:left;font-family:inherit;
+}
+.atab:hover{color:var(--cream);background:rgba(201,168,76,0.04);}
+.atab.active{color:var(--gold);border-left-color:var(--gold);background:rgba(201,168,76,0.07);}
+.atab .ti{font-size:1rem;width:20px;text-align:center;}
+.admin-sb-bottom{padding:1rem 1.2rem;border-top:1px solid rgba(201,168,76,0.1);}
+.logout-btn{
+    width:100%;background:rgba(232,48,80,0.1);border:1px solid rgba(232,48,80,0.2);
+    color:rgba(232,48,80,0.7);border-radius:6px;padding:0.55rem;
+    font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;
+    cursor:pointer;transition:all 0.2s;font-family:inherit;
+}
+.logout-btn:hover{background:rgba(232,48,80,0.2);color:var(--red);}
+.admin-main{margin-left:var(--sb-w);flex:1;padding:2.5rem;min-height:100vh;}
+
+/* ── TAB CONTENT ── */
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+.tab-title{font-size:1.5rem;font-weight:700;color:var(--cream);margin-bottom:0.3rem;}
+.tab-sub{font-size:0.8rem;color:rgba(242,217,200,0.4);margin-bottom:2rem;}
+
+/* ── KPI CARDS ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.2rem;margin-bottom:2.5rem;}
+.kpi{
+    background:var(--dark2);border:1px solid rgba(201,168,76,0.12);
+    border-radius:10px;padding:1.4rem;
+}
+.kpi-label{font-size:0.62rem;letter-spacing:3px;text-transform:uppercase;color:rgba(242,217,200,0.35);margin-bottom:0.5rem;}
+.kpi-val{font-size:1.6rem;font-weight:700;color:var(--gold);}
+.kpi-val.green{color:#4ADE80;}
+.kpi-val.blue{color:#60A5FA;}
+.kpi-val.pink{color:var(--blush);}
+.kpi-note{font-size:0.68rem;color:rgba(242,217,200,0.3);margin-top:0.25rem;}
+
+/* ── TABLES ── */
+.section-hd{font-size:0.75rem;letter-spacing:3px;text-transform:uppercase;color:rgba(242,217,200,0.35);margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(201,168,76,0.1);}
+.admin-table{width:100%;border-collapse:collapse;font-size:0.82rem;}
+.admin-table th{
+    text-align:left;padding:0.7rem 1rem;
+    font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;
+    color:rgba(242,217,200,0.35);border-bottom:1px solid rgba(201,168,76,0.1);
+    background:rgba(201,168,76,0.03);
+}
+.admin-table td{
+    padding:0.75rem 1rem;border-bottom:1px solid rgba(201,168,76,0.06);
+    color:rgba(242,217,200,0.75);vertical-align:middle;
+}
+.admin-table tr:last-child td{border-bottom:none;}
+.admin-table tr:hover td{background:rgba(201,168,76,0.04);}
+.tbl-wrap{background:var(--dark2);border:1px solid rgba(201,168,76,0.1);border-radius:8px;overflow:hidden;margin-bottom:2rem;}
+
+/* ── FORMS ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1.5rem;}
+.form-grid.cols3{grid-template-columns:1fr 1fr 1fr;}
+.form-grid.full{grid-template-columns:1fr;}
+.field label{display:block;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;color:rgba(242,217,200,0.38);margin-bottom:0.45rem;}
+.field input,.field select,.field textarea{
+    width:100%;background:rgba(255,255,255,0.04);
+    border:1px solid rgba(201,168,76,0.15);color:var(--cream);
+    border-radius:6px;padding:0.65rem 0.85rem;font-size:0.85rem;
+    font-family:inherit;outline:none;transition:border-color 0.2s;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(201,168,76,0.45);}
+.field select option{background:var(--dark2);}
+.form-box{background:var(--dark2);border:1px solid rgba(201,168,76,0.1);border-radius:10px;padding:2rem;margin-bottom:2rem;}
+.form-box h3{font-size:0.9rem;color:var(--cream);margin-bottom:1.5rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(201,168,76,0.1);}
+.btn-primary{
+    background:var(--gold);color:var(--dark);border:none;border-radius:6px;
+    padding:0.7rem 2rem;font-size:0.8rem;font-weight:700;letter-spacing:1.5px;
+    text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-family:inherit;
+}
+.btn-primary:hover{background:var(--gold-lt);}
+.btn-danger{
+    background:rgba(232,48,80,0.12);border:1px solid rgba(232,48,80,0.25);
+    color:var(--red);border-radius:4px;padding:0.3rem 0.7rem;
+    font-size:0.7rem;cursor:pointer;font-family:inherit;transition:all 0.2s;
+}
+.btn-danger:hover{background:rgba(232,48,80,0.25);}
+.btn-outline{
+    background:none;border:1px solid rgba(201,168,76,0.25);color:var(--gold);
+    border-radius:6px;padding:0.6rem 1.5rem;font-size:0.78rem;font-weight:600;
+    letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;font-family:inherit;
+}
+.btn-outline:hover{background:rgba(201,168,76,0.1);}
+.alert{padding:0.75rem 1rem;border-radius:6px;font-size:0.82rem;margin-bottom:1rem;display:none;}
+.alert.success{background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.25);color:#4ADE80;}
+.alert.error{background:rgba(232,48,80,0.1);border:1px solid rgba(232,48,80,0.25);color:var(--red);}
+
+/* ── CHARTS ── */
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:2rem;}
+.chart-box{background:var(--dark2);border:1px solid rgba(201,168,76,0.1);border-radius:10px;padding:1.5rem;}
+.chart-box h3{font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;color:rgba(242,217,200,0.4);margin-bottom:1.2rem;}
+.chart-box.full{grid-column:1/-1;}
+
+/* ── PRODUCT COST TABLE ── */
+.cost-input{
+    width:90px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.12);
+    color:var(--cream);border-radius:4px;padding:0.3rem 0.5rem;font-size:0.82rem;
+    font-family:inherit;outline:none;text-align:right;
+}
+.cost-input:focus{border-color:rgba(201,168,76,0.4);}
+.margin-bar{height:6px;border-radius:3px;background:rgba(201,168,76,0.1);margin-top:4px;overflow:hidden;}
+.margin-fill{height:100%;border-radius:3px;background:var(--gold);transition:width 0.3s;}
+
+/* ── EXPORT ── */
+.export-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem;}
+.export-card{
+    background:var(--dark2);border:1px solid rgba(201,168,76,0.1);
+    border-radius:10px;padding:1.8rem;text-align:center;
+}
+.export-icon{font-size:2.5rem;margin-bottom:0.75rem;}
+.export-card h3{font-size:0.9rem;color:var(--cream);margin-bottom:0.4rem;}
+.export-card p{font-size:0.75rem;color:rgba(242,217,200,0.4);line-height:1.7;margin-bottom:1.2rem;}
+.filter-row{display:flex;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;align-items:flex-end;}
+.filter-row .field{flex:1;min-width:140px;}
+.badge-tag{
+    display:inline-block;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.25);
+    color:var(--gold);font-size:0.65rem;letter-spacing:1.5px;text-transform:uppercase;
+    padding:0.2rem 0.6rem;border-radius:20px;
+}
+.profit-pos{color:#4ADE80;}
+.profit-neg{color:var(--red);}
+@media(max-width:900px){
+    .charts-grid{grid-template-columns:1fr;}
+    .form-grid,.form-grid.cols3{grid-template-columns:1fr;}
+    .admin-main{padding:1.5rem;}
+}
+@media(max-width:680px){
+    #adminPanel{flex-direction:column;}
+    .admin-sb{position:static;width:100%;height:auto;flex-direction:row;flex-wrap:wrap;}
+    .admin-sb-top{padding:1rem;}
+    .admin-main{margin-left:0;}
+}
+</style>
+</head>
+<body>
+
+<!-- ── PASSWORD GATE ── -->
+<div id="gate">
+    <div class="gate-box">
+        <div class="gate-logo">Velvet <span>Crumb</span></div>
+        <div class="gate-sub">Admin Panel</div>
+        <input type="password" id="pwInput" placeholder="Enter password" onkeydown="if(event.key==='Enter')login()">
+        <button onclick="login()">Login</button>
+        <div class="gate-err" id="gateErr"></div>
+    </div>
+</div>
+
+<!-- ── ADMIN PANEL ── -->
+<div id="adminPanel" style="display:none;">
+    <aside class="admin-sb">
+        <div class="admin-sb-top">
+            <div class="admin-logo">Velvet <span>Crumb</span></div>
+            <div class="admin-tagline">Admin Dashboard</div>
+        </div>
+        <nav class="admin-nav">
+            <button class="atab active" data-tab="overview" onclick="showTab('overview')"><span class="ti">📊</span> Overview</button>
+            <button class="atab" data-tab="logsale" onclick="showTab('logsale')"><span class="ti">➕</span> Log a Sale</button>
+            <button class="atab" data-tab="products" onclick="showTab('products')"><span class="ti">🍪</span> Products & Costs</button>
+            <button class="atab" data-tab="reports" onclick="showTab('reports')"><span class="ti">📈</span> Reports</button>
+            <button class="atab" data-tab="export" onclick="showTab('export')"><span class="ti">📤</span> Export / Backup</button>
+        </nav>
+        <div class="admin-sb-bottom">
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </aside>
+
+    <main class="admin-main">
+
+        <!-- ══ OVERVIEW ══ -->
+        <div class="tab-panel active" id="tab-overview">
+            <div class="tab-title">Overview</div>
+            <div class="tab-sub">Your business at a glance</div>
+
+            <!-- Filter -->
+            <div class="filter-row">
+                <div class="field"><label>Period</label>
+                    <select id="overviewPeriod" onchange="renderOverview()">
+                        <option value="7">Last 7 days</option>
+                        <option value="30" selected>Last 30 days</option>
+                        <option value="90">Last 90 days</option>
+                        <option value="all">All time</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- KPIs -->
+            <div class="kpi-grid" id="kpiGrid"></div>
+
+            <!-- Recent Sales -->
+            <div class="section-hd">Recent Sales</div>
+            <div class="tbl-wrap">
+                <table class="admin-table">
+                    <thead><tr>
+                        <th>Date</th><th>Product</th><th>Qty</th><th>Flavours</th>
+                        <th>Revenue</th><th>Profit</th><th>Notes</th><th></th>
+                    </tr></thead>
+                    <tbody id="recentSalesTbody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ══ LOG A SALE ══ -->
+        <div class="tab-panel" id="tab-logsale">
+            <div class="tab-title">Log a Sale</div>
+            <div class="tab-sub">Record each WhatsApp order you receive</div>
+            <div class="alert success" id="saleAlert">Sale logged successfully!</div>
+            <div class="form-box">
+                <h3>New Sale Entry</h3>
+                <div class="form-grid">
+                    <div class="field"><label>Date</label><input type="date" id="saleDate"></div>
+                    <div class="field"><label>Product</label>
+                        <select id="saleProduct" onchange="autoFillPrice()">
+                            <option value="">Select product…</option>
+                        </select>
+                    </div>
+                    <div class="field"><label>Quantity</label><input type="number" id="saleQty" min="1" value="6" oninput="calcSaleTotal()"></div>
+                    <div class="field"><label>Price per Unit (KES)</label><input type="number" id="salePricePerUnit" oninput="calcSaleTotal()"></div>
+                    <div class="field"><label>Cost per Unit (KES)</label><input type="number" id="saleCostPerUnit" oninput="calcSaleTotal()"></div>
+                    <div class="field"><label>Flavour(s)</label><input type="text" id="saleFlavours" placeholder="e.g. Vanilla, Red Velvet"></div>
+                </div>
+                <div class="form-grid full">
+                    <div class="field"><label>Notes (optional)</label><input type="text" id="saleNotes" placeholder="Customer name, location, special requests…"></div>
+                </div>
+                <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);border-radius:8px;padding:1rem 1.2rem;margin-bottom:1.5rem;display:flex;gap:2rem;flex-wrap:wrap;">
+                    <div><div style="font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;color:rgba(242,217,200,0.35);">Revenue</div><div style="font-size:1.2rem;color:var(--gold);font-weight:700;" id="saleTotalRevenue">KES 0</div></div>
+                    <div><div style="font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;color:rgba(242,217,200,0.35);">Cost</div><div style="font-size:1.2rem;color:rgba(242,217,200,0.5);font-weight:700;" id="saleTotalCost">KES 0</div></div>
+                    <div><div style="font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;color:rgba(242,217,200,0.35);">Profit</div><div style="font-size:1.2rem;font-weight:700;" id="saleTotalProfit">KES 0</div></div>
+                    <div><div style="font-size:0.62rem;letter-spacing:2px;text-transform:uppercase;color:rgba(242,217,200,0.35);">Margin</div><div style="font-size:1.2rem;font-weight:700;" id="saleMargin">0%</div></div>
+                </div>
+                <button class="btn-primary" onclick="logSale()">Log Sale</button>
+            </div>
+        </div>
+
+        <!-- ══ PRODUCTS & COSTS ══ -->
+        <div class="tab-panel" id="tab-products">
+            <div class="tab-title">Products & Costs</div>
+            <div class="tab-sub">Update your selling prices and ingredient costs per unit. Profit is calculated from these figures.</div>
+            <div class="alert success" id="productsAlert">Costs saved!</div>
+            <div class="tbl-wrap">
+                <table class="admin-table">
+                    <thead><tr>
+                        <th>Product</th><th>Unit</th><th>Min Order</th>
+                        <th>Selling Price (KES)</th><th>Cost Price (KES)</th>
+                        <th>Profit / Unit</th><th>Margin</th>
+                    </tr></thead>
+                    <tbody id="productsTbody"></tbody>
+                </table>
+            </div>
+            <button class="btn-primary" onclick="saveProducts()">Save Changes</button>
+        </div>
+
+        <!-- ══ REPORTS ══ -->
+        <div class="tab-panel" id="tab-reports">
+            <div class="tab-title">Reports</div>
+            <div class="tab-sub">Sales breakdown and trends</div>
+            <div class="filter-row">
+                <div class="field"><label>Period</label>
+                    <select id="reportPeriod" onchange="renderReports()">
+                        <option value="30" selected>Last 30 days</option>
+                        <option value="90">Last 90 days</option>
+                        <option value="all">All time</option>
+                    </select>
+                </div>
+            </div>
+            <div class="charts-grid">
+                <div class="chart-box"><h3>Units Sold by Product</h3><canvas id="chartUnits" height="220"></canvas></div>
+                <div class="chart-box"><h3>Revenue by Product</h3><canvas id="chartRevenue" height="220"></canvas></div>
+                <div class="chart-box full"><h3>Revenue &amp; Profit Over Time (Weekly)</h3><canvas id="chartTrend" height="140"></canvas></div>
+            </div>
+            <div class="section-hd">Product Breakdown</div>
+            <div class="tbl-wrap">
+                <table class="admin-table">
+                    <thead><tr>
+                        <th>Product</th><th>Orders</th><th>Units Sold</th>
+                        <th>Total Revenue</th><th>Total Cost</th><th>Total Profit</th><th>Avg Margin</th>
+                    </tr></thead>
+                    <tbody id="breakdownTbody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ══ EXPORT ══ -->
+        <div class="tab-panel" id="tab-export">
+            <div class="tab-title">Export & Backup</div>
+            <div class="tab-sub">Download your data or import from a previous backup</div>
+            <div class="export-grid">
+                <div class="export-card">
+                    <div class="export-icon">📊</div>
+                    <h3>Export Sales CSV</h3>
+                    <p>Download all sales records as a spreadsheet. Open in Excel or Google Sheets.</p>
+                    <button class="btn-primary" onclick="exportCSV()">Download CSV</button>
+                </div>
+                <div class="export-card">
+                    <div class="export-icon">💾</div>
+                    <h3>Backup All Data</h3>
+                    <p>Download a full JSON backup of all your sales, products, and settings.</p>
+                    <button class="btn-primary" onclick="exportJSON()">Download Backup</button>
+                </div>
+                <div class="export-card">
+                    <div class="export-icon">📥</div>
+                    <h3>Import Backup</h3>
+                    <p>Restore from a previous JSON backup file. This will replace all current data.</p>
+                    <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importJSON(event)">
+                    <button class="btn-outline" onclick="document.getElementById('importFile').click()">Choose File</button>
+                </div>
+                <div class="export-card">
+                    <div class="export-icon">🗑️</div>
+                    <h3>Clear All Data</h3>
+                    <p>Permanently delete all sales records. Products and costs will be kept.</p>
+                    <button class="btn-danger" style="padding:0.6rem 1.5rem;font-size:0.78rem;" onclick="clearAllSales()">Clear Sales Data</button>
+                </div>
+            </div>
+            <div style="margin-top:2rem;background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.12);border-radius:8px;padding:1.2rem 1.5rem;">
+                <div style="font-size:0.65rem;letter-spacing:3px;text-transform:uppercase;color:rgba(242,217,200,0.3);margin-bottom:0.5rem;">Storage Info</div>
+                <div style="font-size:0.82rem;color:rgba(242,217,200,0.55);" id="storageInfo">—</div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script>
+// ── AUTH ──
+const PASSWORD = 'vc2026';
+function login() {
+    const pw = document.getElementById('pwInput').value;
+    if (pw === PASSWORD) {
+        document.getElementById('gate').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'flex';
+        initAdmin();
+    } else {
+        document.getElementById('gateErr').textContent = 'Incorrect password. Try again.';
+        document.getElementById('pwInput').value = '';
+    }
+}
+function logout() {
+    document.getElementById('gate').style.display = 'flex';
+    document.getElementById('adminPanel').style.display = 'none';
+    document.getElementById('pwInput').value = '';
+    document.getElementById('gateErr').textContent = '';
+}
+
+// ── DATA ──
+const KEY = 'vc_admin';
+const DEFAULT_PRODUCTS = [
+    {id:'cake-pops',    name:'Cake Pops',        price:150, cost:55,  unit:'each',      min:6},
+    {id:'cakesicles',   name:'Cakesicles',        price:250, cost:85,  unit:'each',      min:6},
+    {id:'cookies',      name:'Artisan Cookies',   price:100, cost:30,  unit:'each',      min:6},
+    {id:'banana-bread', name:'Banana Bread',      price:600, cost:180, unit:'per loaf',  min:1},
+    {id:'cake-slices',  name:'Cake Slices',       price:300, cost:100, unit:'per slice', min:4},
+    {id:'cupcakes',     name:'Cupcakes',          price:180, cost:60,  unit:'each',      min:6},
+    {id:'muffins',      name:'Muffins',           price:130, cost:40,  unit:'each',      min:6},
+];
+
+function loadData() {
+    const raw = localStorage.getItem(KEY);
+    if (raw) return JSON.parse(raw);
+    return {products: DEFAULT_PRODUCTS, sales: []};
+}
+function saveData(d) { localStorage.setItem(KEY, JSON.stringify(d)); }
+
+// ── TABS ──
+function showTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.atab').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    document.querySelector('[data-tab="' + id + '"]').classList.add('active');
+    if (id === 'overview') renderOverview();
+    if (id === 'reports')  renderReports();
+    if (id === 'products') renderProducts();
+    if (id === 'export')   renderExport();
+}
+
+// ── INIT ──
+function initAdmin() {
+    const data = loadData();
+    // Populate product dropdown
+    const sel = document.getElementById('saleProduct');
+    sel.innerHTML = '<option value="">Select product…</option>';
+    data.products.forEach(p => {
+        const o = document.createElement('option');
+        o.value = p.id; o.textContent = p.name; sel.appendChild(o);
+    });
+    // Default date to today
+    document.getElementById('saleDate').value = new Date().toISOString().split('T')[0];
+    renderOverview();
+}
+
+// ── HELPERS ──
+function fmt(n) { return 'KES ' + Math.round(n).toLocaleString(); }
+function fmtN(n) { return Math.round(n).toLocaleString(); }
+function pct(n) { return Math.round(n) + '%'; }
+
+function filterSales(data, days) {
+    if (days === 'all') return data.sales;
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - parseInt(days));
+    return data.sales.filter(s => new Date(s.date) >= cutoff);
+}
+
+function weekKey(dateStr) {
+    const d = new Date(dateStr);
+    const monday = new Date(d);
+    monday.setDate(d.getDate() - ((d.getDay() + 6) % 7));
+    return monday.toISOString().split('T')[0];
+}
+
+// ── OVERVIEW ──
+function renderOverview() {
+    const data   = loadData();
+    const period = document.getElementById('overviewPeriod').value;
+    const sales  = filterSales(data, period);
+
+    const totalRev  = sales.reduce((a,s) => a + s.revenue, 0);
+    const totalCost = sales.reduce((a,s) => a + s.cost, 0);
+    const totalProf = totalRev - totalCost;
+    const totalUnits= sales.reduce((a,s) => a + s.qty, 0);
+    const orders    = sales.length;
+
+    // Best seller
+    const unitsByProd = {};
+    sales.forEach(s => { unitsByProd[s.productName] = (unitsByProd[s.productName]||0) + s.qty; });
+    const bestSeller = Object.entries(unitsByProd).sort((a,b) => b[1]-a[1])[0];
+
+    document.getElementById('kpiGrid').innerHTML = `
+        <div class="kpi"><div class="kpi-label">Total Revenue</div><div class="kpi-val">${fmt(totalRev)}</div><div class="kpi-note">${orders} orders · ${totalUnits} units</div></div>
+        <div class="kpi"><div class="kpi-label">Total Profit</div><div class="kpi-val green">${fmt(totalProf)}</div><div class="kpi-note">Cost: ${fmt(totalCost)}</div></div>
+        <div class="kpi"><div class="kpi-label">Profit Margin</div><div class="kpi-val blue">${totalRev > 0 ? pct(totalProf/totalRev*100) : '0%'}</div><div class="kpi-note">Overall average</div></div>
+        <div class="kpi"><div class="kpi-label">Best Seller</div><div class="kpi-val pink" style="font-size:1rem;">${bestSeller ? bestSeller[0] : '—'}</div><div class="kpi-note">${bestSeller ? bestSeller[1] + ' units sold' : 'No sales yet'}</div></div>
+    `;
+
+    // Recent sales table (last 15)
+    const recent = [...sales].sort((a,b) => new Date(b.date)-new Date(a.date)).slice(0,15);
+    const tbody = document.getElementById('recentSalesTbody');
+    if (!recent.length) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:rgba(242,217,200,0.3);padding:2rem;">No sales logged yet. Use "Log a Sale" to add your first entry.</td></tr>';
+        return;
+    }
+    tbody.innerHTML = recent.map(s => `
+        <tr>
+            <td>${s.date}</td>
+            <td>${s.productName}</td>
+            <td>${s.qty}</td>
+            <td style="color:rgba(242,217,200,0.45);font-size:0.75rem;">${s.flavours||'—'}</td>
+            <td style="color:var(--gold);">${fmt(s.revenue)}</td>
+            <td class="${s.profit>=0?'profit-pos':'profit-neg'}">${fmt(s.profit)}</td>
+            <td style="color:rgba(242,217,200,0.4);font-size:0.75rem;">${s.notes||'—'}</td>
+            <td><button class="btn-danger" onclick="deleteSale('${s.id}')">Delete</button></td>
+        </tr>
+    `).join('');
+}
+
+// ── LOG SALE ──
+function autoFillPrice() {
+    const data = loadData();
+    const id = document.getElementById('saleProduct').value;
+    const p = data.products.find(x => x.id === id);
+    if (p) {
+        document.getElementById('salePricePerUnit').value = p.price;
+        document.getElementById('saleCostPerUnit').value = p.cost;
+        document.getElementById('saleQty').value = p.min;
+    }
+    calcSaleTotal();
+}
+
+function calcSaleTotal() {
+    const qty   = parseFloat(document.getElementById('saleQty').value) || 0;
+    const price = parseFloat(document.getElementById('salePricePerUnit').value) || 0;
+    const cost  = parseFloat(document.getElementById('saleCostPerUnit').value) || 0;
+    const rev   = qty * price;
+    const cst   = qty * cost;
+    const prof  = rev - cst;
+    const margin= rev > 0 ? prof/rev*100 : 0;
+    document.getElementById('saleTotalRevenue').textContent = fmt(rev);
+    document.getElementById('saleTotalCost').textContent    = fmt(cst);
+    document.getElementById('saleTotalProfit').textContent  = fmt(prof);
+    document.getElementById('saleTotalProfit').className    = prof >= 0 ? 'profit-pos' : 'profit-neg';
+    document.getElementById('saleMargin').textContent       = pct(margin);
+    document.getElementById('saleMargin').className         = prof >= 0 ? 'profit-pos' : 'profit-neg';
+}
+
+function logSale() {
+    const data    = loadData();
+    const prodId  = document.getElementById('saleProduct').value;
+    const prod    = data.products.find(p => p.id === prodId);
+    const date    = document.getElementById('saleDate').value;
+    const qty     = parseInt(document.getElementById('saleQty').value) || 0;
+    const price   = parseFloat(document.getElementById('salePricePerUnit').value) || 0;
+    const cost    = parseFloat(document.getElementById('saleCostPerUnit').value) || 0;
+    const flavour = document.getElementById('saleFlavours').value.trim();
+    const notes   = document.getElementById('saleNotes').value.trim();
+
+    if (!prodId || !date || !qty || !price) {
+        alert('Please fill in product, date, quantity and price.'); return;
+    }
+
+    const rev  = qty * price;
+    const cst  = qty * cost;
+    const prof = rev - cst;
+
+    data.sales.push({
+        id: Date.now().toString(),
+        date, productId: prodId, productName: prod.name,
+        qty, pricePerUnit: price, costPerUnit: cost,
+        revenue: rev, cost: cst, profit: prof,
+        flavours: flavour, notes
+    });
+    saveData(data);
+
+    const alert = document.getElementById('saleAlert');
+    alert.style.display = 'block';
+    setTimeout(() => alert.style.display = 'none', 3000);
+
+    // Reset form
+    document.getElementById('saleProduct').value = '';
+    document.getElementById('saleQty').value = '';
+    document.getElementById('salePricePerUnit').value = '';
+    document.getElementById('saleCostPerUnit').value = '';
+    document.getElementById('saleFlavours').value = '';
+    document.getElementById('saleNotes').value = '';
+    document.getElementById('saleDate').value = new Date().toISOString().split('T')[0];
+    calcSaleTotal();
+}
+
+function deleteSale(id) {
+    if (!confirm('Delete this sale record?')) return;
+    const data = loadData();
+    data.sales = data.sales.filter(s => s.id !== id);
+    saveData(data);
+    renderOverview();
+}
+
+// ── PRODUCTS ──
+function renderProducts() {
+    const data = loadData();
+    document.getElementById('productsTbody').innerHTML = data.products.map(p => {
+        const prof   = p.price - p.cost;
+        const margin = p.price > 0 ? Math.round(prof/p.price*100) : 0;
+        return `<tr>
+            <td><strong>${p.name}</strong></td>
+            <td><span class="badge-tag">${p.unit}</span></td>
+            <td>${p.min}</td>
+            <td><input class="cost-input" type="number" id="price-${p.id}" value="${p.price}" oninput="refreshProductRow('${p.id}')"></td>
+            <td><input class="cost-input" type="number" id="cost-${p.id}" value="${p.cost}" oninput="refreshProductRow('${p.id}')"></td>
+            <td id="profit-${p.id}" class="${prof>=0?'profit-pos':'profit-neg'}">${fmt(prof)}</td>
+            <td id="margin-${p.id}">
+                <div>${pct(margin)}</div>
+                <div class="margin-bar"><div class="margin-fill" id="mfill-${p.id}" style="width:${Math.min(100,Math.max(0,margin))}%"></div></div>
+            </td>
+        </tr>`;
+    }).join('');
+}
+
+function refreshProductRow(id) {
+    const price  = parseFloat(document.getElementById('price-' + id).value) || 0;
+    const cost   = parseFloat(document.getElementById('cost-' + id).value) || 0;
+    const prof   = price - cost;
+    const margin = price > 0 ? Math.round(prof/price*100) : 0;
+    const el     = document.getElementById('profit-' + id);
+    if (el) { el.textContent = fmt(prof); el.className = prof>=0?'profit-pos':'profit-neg'; }
+    const mel = document.getElementById('margin-' + id);
+    if (mel) mel.children[0].textContent = pct(margin);
+    const fill = document.getElementById('mfill-' + id);
+    if (fill) fill.style.width = Math.min(100,Math.max(0,margin)) + '%';
+}
+
+function saveProducts() {
+    const data = loadData();
+    data.products.forEach(p => {
+        const priceEl = document.getElementById('price-' + p.id);
+        const costEl  = document.getElementById('cost-' + p.id);
+        if (priceEl) p.price = parseFloat(priceEl.value) || p.price;
+        if (costEl)  p.cost  = parseFloat(costEl.value)  || p.cost;
+    });
+    saveData(data);
+    // Update dropdown
+    const sel = document.getElementById('saleProduct');
+    sel.innerHTML = '<option value="">Select product…</option>';
+    data.products.forEach(p => {
+        const o = document.createElement('option');
+        o.value = p.id; o.textContent = p.name; sel.appendChild(o);
+    });
+    const al = document.getElementById('productsAlert');
+    al.style.display = 'block';
+    setTimeout(() => al.style.display = 'none', 2500);
+}
+
+// ── REPORTS ──
+let chartUnits=null, chartRevenue=null, chartTrend=null;
+
+function renderReports() {
+    const data   = loadData();
+    const period = document.getElementById('reportPeriod').value;
+    const sales  = filterSales(data, period);
+
+    // Aggregate by product
+    const byProd = {};
+    data.products.forEach(p => { byProd[p.id] = {name:p.name,orders:0,units:0,revenue:0,cost:0,profit:0}; });
+    sales.forEach(s => {
+        if (!byProd[s.productId]) byProd[s.productId] = {name:s.productName,orders:0,units:0,revenue:0,cost:0,profit:0};
+        const b = byProd[s.productId];
+        b.orders++; b.units += s.qty; b.revenue += s.revenue; b.cost += s.cost; b.profit += s.profit;
+    });
+    const prods = Object.values(byProd).filter(p => p.units > 0);
+    const COLORS = ['#C9A84C','#FF4B82','#60A5FA','#4ADE80','#FBBF24','#A78BFA','#FB923C'];
+
+    // Bar: units sold
+    const uCtx = document.getElementById('chartUnits').getContext('2d');
+    if (chartUnits) chartUnits.destroy();
+    chartUnits = new Chart(uCtx, {
+        type:'bar',
+        data:{
+            labels: prods.map(p=>p.name),
+            datasets:[{label:'Units Sold',data:prods.map(p=>p.units),backgroundColor:COLORS,borderRadius:4}]
+        },
+        options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:'rgba(242,217,200,0.4)',font:{size:11}}},y:{ticks:{color:'rgba(242,217,200,0.4)'},grid:{color:'rgba(201,168,76,0.06)'}}}}
+    });
+
+    // Donut: revenue
+    const rCtx = document.getElementById('chartRevenue').getContext('2d');
+    if (chartRevenue) chartRevenue.destroy();
+    chartRevenue = new Chart(rCtx, {
+        type:'doughnut',
+        data:{
+            labels: prods.map(p=>p.name),
+            datasets:[{data:prods.map(p=>p.revenue),backgroundColor:COLORS,borderWidth:2,borderColor:'#1A060E'}]
+        },
+        options:{plugins:{legend:{position:'bottom',labels:{color:'rgba(242,217,200,0.55)',font:{size:11},padding:12}}}}
+    });
+
+    // Line: weekly revenue + profit
+    const weekMap = {};
+    sales.forEach(s => {
+        const wk = weekKey(s.date);
+        if (!weekMap[wk]) weekMap[wk] = {rev:0, prof:0};
+        weekMap[wk].rev  += s.revenue;
+        weekMap[wk].prof += s.profit;
+    });
+    const weeks  = Object.keys(weekMap).sort();
+    const tCtx   = document.getElementById('chartTrend').getContext('2d');
+    if (chartTrend) chartTrend.destroy();
+    chartTrend = new Chart(tCtx, {
+        type:'line',
+        data:{
+            labels: weeks.map(w => {
+                const d = new Date(w); return d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+            }),
+            datasets:[
+                {label:'Revenue',data:weeks.map(w=>weekMap[w].rev),borderColor:'#C9A84C',backgroundColor:'rgba(201,168,76,0.1)',tension:0.4,fill:true,pointRadius:4,pointBackgroundColor:'#C9A84C'},
+                {label:'Profit', data:weeks.map(w=>weekMap[w].prof),borderColor:'#4ADE80',backgroundColor:'rgba(74,222,128,0.08)',tension:0.4,fill:true,pointRadius:4,pointBackgroundColor:'#4ADE80'}
+            ]
+        },
+        options:{plugins:{legend:{labels:{color:'rgba(242,217,200,0.55)',font:{size:11}}}},scales:{x:{ticks:{color:'rgba(242,217,200,0.4)'}},y:{ticks:{color:'rgba(242,217,200,0.4)',callback:v=>'KES '+v.toLocaleString()},grid:{color:'rgba(201,168,76,0.06)'}}}}
+    });
+
+    // Breakdown table
+    const sorted = Object.values(byProd).sort((a,b) => b.units - a.units);
+    document.getElementById('breakdownTbody').innerHTML = sorted.map(p => {
+        const margin = p.revenue > 0 ? Math.round(p.profit/p.revenue*100) : 0;
+        return `<tr>
+            <td><strong>${p.name}</strong></td>
+            <td>${p.orders}</td>
+            <td>${fmtN(p.units)}</td>
+            <td style="color:var(--gold);">${fmt(p.revenue)}</td>
+            <td style="color:rgba(242,217,200,0.5);">${fmt(p.cost)}</td>
+            <td class="${p.profit>=0?'profit-pos':'profit-neg'}">${fmt(p.profit)}</td>
+            <td class="${margin>=50?'profit-pos':margin>=30?'':'profit-neg'}">${pct(margin)}</td>
+        </tr>`;
+    }).join('');
+}
+
+// ── EXPORT ──
+function renderExport() {
+    const data = loadData();
+    const bytes = new Blob([JSON.stringify(data)]).size;
+    document.getElementById('storageInfo').textContent =
+        `${data.sales.length} sale records · ${data.products.length} products · ~${(bytes/1024).toFixed(1)} KB stored`;
+}
+
+function exportCSV() {
+    const data = loadData();
+    if (!data.sales.length) { alert('No sales to export yet.'); return; }
+    const headers = ['Date','Product','Qty','Price/Unit','Cost/Unit','Revenue','Cost','Profit','Margin%','Flavours','Notes'];
+    const rows = data.sales.map(s => [
+        s.date, s.productName, s.qty, s.pricePerUnit, s.costPerUnit,
+        s.revenue, s.cost, s.profit,
+        s.revenue > 0 ? Math.round(s.profit/s.revenue*100) : 0,
+        s.flavours, s.notes
+    ].map(v => '"' + String(v||'').replace(/"/g,'""') + '"').join(','));
+    const csv = [headers.join(','), ...rows].join('\n');
+    download('velvet-crumb-sales.csv', 'text/csv', csv);
+}
+
+function exportJSON() {
+    const data = loadData();
+    download('velvet-crumb-backup.json', 'application/json', JSON.stringify(data, null, 2));
+}
+
+function download(filename, type, content) {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([content], {type}));
+    a.download = filename; a.click();
+}
+
+function importJSON(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+        try {
+            const parsed = JSON.parse(ev.target.result);
+            if (!parsed.products || !parsed.sales) throw new Error();
+            if (!confirm('This will replace ALL current data. Are you sure?')) return;
+            saveData(parsed);
+            initAdmin();
+            renderExport();
+            alert('Data imported successfully!');
+        } catch { alert('Invalid backup file. Please use a Velvet Crumb backup JSON.'); }
+    };
+    reader.readAsText(file);
+}
+
+function clearAllSales() {
+    if (!confirm('This will permanently delete all sale records. Are you sure?')) return;
+    const data = loadData();
+    data.sales = [];
+    saveData(data);
+    renderOverview();
+    renderExport();
+    alert('All sales cleared.');
+}
+</script>
+</body>
+</html>
